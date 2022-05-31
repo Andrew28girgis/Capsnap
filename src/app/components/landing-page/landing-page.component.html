@@ -1,0 +1,160 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="container-scroller">
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row ">
+        <div class="navbar-brand-wrapper d-flex align-items-center" style="overflow-x: inherit;">
+            <a class="navbar-brand brand-logo" href="index.html">
+                <div class="logo-holder logo-6">
+                    <a href="">
+                        <h3> <span>CapSource Manager</span></h3>
+                    </a>
+                </div>
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+            <h5 class="mb-0 font-weight-medium d-none d-lg-flex" style="font-size: 20px;">Landing Page</h5>
+            <button class="navbar-toggler
+         navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+</div>
+ 
+<div style="padding: 8px 10px 60px ; border-radius: 10px;margin: 29px 10px;">
+    <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body" style="margin-top: 0; padding: 8px ​0.875rem 0.255re;">
+            <h4 class="card-title">Pages</h4>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Update</th>
+                  <th>Data Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let Page of General.landingPageResponse">
+                  <td> {{Page.pageTitle}}</td>
+                  <td>
+                    <i class="fas fa-pen" style="cursor: pointer;" (click)="UpdatePage(Page)"></i> 
+                    <i class="fas fa-database ml-2" style="cursor: pointer;" (click)="open(DataSource ,Page)"></i> 
+                    <i class="fas fa-eye ml-2" style="cursor: pointer;" (click)="open(View ,Page)"></i>
+                  </td>
+                   <td>
+                     {{Page.DataSources}}
+                   </td> 
+                </tr>
+              </tbody>  
+            </table>
+          </div>
+        </div>
+      </div>
+ <div class="mt-2" style="background-color: #f5f6fa;  height: 450px; padding: 10px 0;border-radius: 4px;">
+    <div class="input-group mb-3" style="width: 30%;margin-left: 11px;">
+        <span style="margin-top: 10px; margin-right: 7px;font-size: 15px;font-weight: bold;">- Page Name:</span>
+        <input type="text" class="form-control" placeholder="Page Name" style="border-radius: 5px; margin-left: 8px;"
+            aria-label="PageName" aria-describedby="basic-addon1" [(ngModel)]="General.landingPage.PageTitle">
+    </div>
+
+    <div class="form-group" style="display: -webkit-inline-box;width: 70%;margin-top: 5px;margin-left: 11px;">
+
+        <label for="recipient-name"> <b>- Page Content: </b> </label>
+        <!-- [(ngModel)]='General.SelectedTemplate.body'  -->
+        <ejs-richtexteditor #templateRTE [(ngModel)]='General.landingPage.PageContent' [toolbarSettings]='tools' [fontSize]='size' name="templateRTE" class="ml-2" >
+        </ejs-richtexteditor>
+        <ejs-dialog #templateDialog id="Dialog" [buttons]='dlgButtons' (overlayClick)="dialogOverlay()"
+            [header]='header' [visible]='false' [showCloseIcon]='true' (created)="dialogCreate()" [isModal]='true'>
+            <ng-template #content>
+                <div id="rteSpecial_char">
+                    <h3> <b> Data </b> </h3>
+                    <div>
+                        <div class="btn btn-primary m-1 " title="Title"
+                            (click)="insertPersonalization('#Title#')"> #Title#
+                        </div>
+                        <div class="btn btn-primary m-1" title="Description"
+                            (click)="insertPersonalization('#Description#')"> #Description#
+                        </div>
+                        <div class="btn btn-primary m-1" title="City"
+                            (click)="insertPersonalization('#City#')"> #City#</div>
+                        <div class="btn btn-primary m-1" title="Address"
+                            (click)="insertPersonalization('#Address#')"> #Address#</div>
+                            <div class="btn btn-primary m-1" title="SquareFootage"
+                            (click)="insertPersonalization('#SquareFootage#')"> #SquareFootage#</div>
+                            <div class="btn btn-primary m-1" title="NumberOfUnits"
+                            (click)="insertPersonalization('#NumberOfUnits#')"> #NumberOfUnits#</div>
+                            <div class="btn btn-primary m-1" title="MainImage"
+                            (click)="insertPersonalization('#MainImage#')"> #MainImage#</div>
+                            <div class="btn btn-primary m-1" title="Images"
+                            (click)="insertPersonalization('#Images#')"> #Images#</div>
+
+                            <div class="select mt-3">
+                              <select name="select Category mr-5" (change)="GetDataSourceId($event)"   >
+                                <option selected >Select Data Source</option>
+                                <!-- <option *ngFor="let data of General.DataSource" value="{{data.id}}">{{data.name}}</option> -->
+                              </select>
+                           </div>
+                           <input type="text" class="form-control mt-1" [(ngModel)]="General.TextArea" name="TextArea">
+
+                            <div class="btn btn-primary m-1" title="TextArea"
+                            (click)="insertDataSource('#D'+General.DataSourceId+'*'+General.TextArea+'#')">     
+                                        Enter 
+                          </div>
+                      
+                    </div>
+                    <br> <br>
+   
+                    <!-- <div style="display: inline-block;" *ngFor="let Field of Deal.customFields.dealCustomFieldMeta;">
+                  <div class="btn btn-danger m-1" title="Parameter.{{Field.fieldLabel}}"
+                    (click)="insertPersonalization('#Parameter.'+Field.fieldLabel+'#')">#Parameter.{{Field.fieldLabel}}#
+                  </div>
+                </div> -->
+
+                </div>
+            </ng-template>
+        </ejs-dialog>
+    </div>
+    <div>
+        <button class="btn btn-primary float-right mr-4" (click)="SavePage()">Save Page</button>
+    </div>
+</div>
+</div>
+
+
+<ng-template #DataSource let-modal>
+    <div class="modal-body-DataSoure">
+      <p><b>Choose Data Source For {{General.modalObject.pageTitle}}</b></p>
+       <ul>
+           <!-- <li *ngFor="let Data of General.DataSource">
+            <input (change)="chooseDataSource($event)" type="checkbox" id="input{{Data.id}}"
+            name="personid" class="mr-2 person-name" value="{{Data.id}}">  {{Data.name}}</li> -->
+       </ul>
+       <div class="float-right">
+        <button type="button" class="btn btn-outline-dark " (click)="modal.close('Close click');">Close</button>
+          <button type="button" class="btn btn-dark ml-2" (click)="AddDataSource();modal.close('Save click');">Add</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #View let-modal>
+    <div class="modal-body-View">
+      <p><b>Active Macro Deal</b></p>
+      <div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
+        <div class="text-center btn-wrapper"
+          *ngFor="let MacroDeal of General.ActiveMacroDeals; let i = index">
+          <button type="button" class="px-0 pipe btn btn-primary mt-2 p-2"  title="View"
+          (click)="modal.close('Save click');" [routerLink]="['/page',General.modalObject.id ,MacroDeal.pipedriveId]">
+             {{MacroDeal.title}} 
+          </button>
+        
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </ng-template>

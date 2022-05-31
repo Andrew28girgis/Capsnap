@@ -1,0 +1,368 @@
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+    
+    
+   <!-- Start Groups Table -->
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Groups table</h4>
+            <table class="table table-bordered action-table" >
+            <thead>
+                <tr>
+                <th style="font-weight: bold; color: #000; background-color: rgb(241, 255, 241); padding: 10px;"> Id </th>
+                <th style="font-weight: bold; color: #000; background-color: rgb(241, 255, 241); padding: 10px;"> Name </th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container >
+                <tr *ngFor="let group of Intake.groups ; let i = index;">
+                <td  [ngClass]="{'highlight': selectedGroupIndex === i}" style="padding: 10px;"> {{group.id}} </td>
+                <td  [ngClass]="{'highlight': selectedGroupIndex === i}"  style="display: flex; justify-content: space-between; padding: 10px;">
+                    <div style="cursor: pointer;"  (click)="getScreens(group.id , i)">
+                     {{group.name}}
+                    </div>
+                    <div>
+                        <i class="fas fa-plus" style="cursor: pointer;" (click)="AddNewScreen(group.id)"></i>
+                        <i class="fas fa-trash-alt ml-3" style="cursor: pointer; color: #ff0054;" title="Delete Group"  (click)="DeleteGroup(group.id)" ></i>
+                    </div>
+                </td>    
+                </tr>
+            </ng-container>
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    <!-- End Group Table -->
+
+    <!-- Start Add New Screen -->
+    <div class="col-lg-12 grid-margin stretch-card"  *ngIf="newScreen">
+    <div class="new-screen" style="padding:10px;width: 100%; margin: 12px; border-radius: 15px; background-color: #f8f9fa;">
+        <div style="display: flex;">
+            <h1>Add New Screen: </h1>
+            <i class="fas fa-times" style=" cursor: pointer;;margin-left: auto; margin-right: 10px;font-size: 20px;" (click)="CloseAddScreen()"></i>
+        </div>
+        <div style="display:flex;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Name :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; margin-left:81px;width: 282px;" placeholder="Enter Name" 
+                [(ngModel)]="NewScreen.name" name="Title"> 
+        </div>
+        <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Title :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; width: 282px; margin-left:91px;"  placeholder="Enter Title" 
+            [(ngModel)]="NewScreen.title" name="Title"> 
+        </div>
+        <div style="display:flex;"> 
+            <p style="margin-top: 10px;margin-right: 10px; ">
+            <b> SubTitle :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; 
+            margin-left:65px;width: 284px;"  placeholder="Enter Headers" 
+            [(ngModel)]="NewScreen.subTitle" name="Headers"> 
+        </div>
+        <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Intro :</b></p> 
+            <textarea class="form-control"  id="exampleFormControlTextarea1" rows="6"  style="margin-left: 86px; width: 500px;"
+            [(ngModel)]="NewScreen.intro"  placeholder="Enter Intro"></textarea>
+        </div>
+        <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Next Screen :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; width: 282px; margin-left:36px;"  placeholder="Enter Next Screen" 
+            [(ngModel)]="NewScreen.nextScreen" name="Title"> 
+        </div>
+        <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Prev Sceen :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; width: 282px; margin-left:42px;"  placeholder="Enter Prev Screen" 
+            [(ngModel)]="NewScreen.prevScreen" name="Title"> 
+        </div>
+        <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Container Type :</b></p> 
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"  style="margin-left: 16px; width: 500px;"
+            [(ngModel)]="container.type"  placeholder="Enter Intro"></textarea>
+        </div>
+
+        <div style="display: flex;margin-top: 8px;justify-content: flex-end;">
+        <button id="doAddToBasket" name="doAddToBasket" class=" m-2 btn btn-success" type="submit" (click)="SaveScreen()" >
+        <span class="arrow_brown">Save Screen <i class="fas fa-long-arrow-alt-right"></i></span>
+    </button> 
+    </div>
+    </div>
+    </div>
+    <!-- End Add New Screen -->
+
+    <!-- Start Screen Table -->
+    <div class="col-lg-12 grid-margin stretch-card" *ngIf="General.screens.length > 0">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title" style="color:#118ab2">Screens table</h4>
+            <table class="table table-bordered action-table">
+            <thead>
+                <tr>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> Screen Id </th>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> Name </th>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> Title </th>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> SubTitle </th>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> intro </th>
+                <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> Next Screen </th>
+                <!-- <th style="font-weight: bold; color: #000; background-color:#f0fbff ; padding: 10px;"> Prev Screen </th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let screen of General.screens ; let i = index;">
+                    <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}" style="padding: 0; text-align: center;"> {{screen.id}}</td>
+                <td  [ngClass]="{'highlightScreen': selectedScreenIndex === i}" style="padding: 0;">
+                  
+                  <div style="display: flex; justify-content: space-between; ">
+                    <div style=" width: 17px;height: 34px;" [style.background-color]="screen.color"></div>
+                     
+                     <span (click)="GetItems(screen ,i)"style="cursor: pointer;     margin: auto 1px;">  {{screen.name}}   </span>
+                     <div style="display: flex; margin-right: 5px;">
+                     <i class="fas fa-plus" style="cursor: pointer; color: #118ab2;  margin: auto 1px; " title="Add Item" [ngClass]="{'iconss': selectedScreenIndex === i}" (click)="AddNewItem(screen)"></i>
+                     <i class="fas fa-trash-alt ml-2" style="cursor: pointer; color: #ff0054;     margin: auto 1px;" 
+                     title="Delete Screen" (click)="DeleteScreen(screen)" ></i>
+                    </div>
+                
+                </div>
+           
+                </td>
+                <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}"> {{screen.title}} </td>    
+                <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}"> {{screen.subTitle}} </td>    
+                <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}"> {{screen.intro}} </td>  
+
+
+                <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}" style="padding: 0;"> 
+                  <div style="display: flex; justify-content: space-between;">
+                    <div style=" width: 17px;height: 34px;" [style.background-color]="GetScreenColor(screen.nextScreenId)"></div>
+                    <span style="cursor: pointer; margin: auto 1px;" >    {{GetScreenName(screen.nextScreenId)}}  </span>
+                    <div style="display: flex; margin: auto 5px;">
+                        <i class="fas fa-plus"  (click)="open(NextScreen,screen)" title="Add Next Screen" 
+                        style="cursor: pointer; color: #118ab2;" [ngClass]="{'iconss': selectedScreenIndex === i}"  ></i>
+                    </div>
+                 </div>
+                </td> 
+
+                <!-- <td [ngClass]="{'highlightScreen': selectedScreenIndex === i}" style="padding: 0;"> 
+                    <div style="display: flex; justify-content: space-between;">
+                      <div style=" width: 17px;height: 34px;" [style.background-color]="GetScreenColor(screen.prevScreenId)"></div>
+                      <span style="cursor: pointer; margin: auto 1px;" >    {{GetScreenName(screen.prevScreenId)}}  </span>
+                      <div style="display: flex;  margin: auto 5px;">
+                          <i class="fas fa-plus" (click)="open(PrevScreen,screen)" title="Add Next Screen" 
+                          style="cursor: pointer; color: #118ab2;" [ngClass]="{'iconss': selectedScreenIndex === i}"  ></i>
+                      </div>
+                   </div>
+                </td>  -->
+  
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    <!-- End Screen Table -->
+
+    <!-- Start Add New Item -->
+    <div class="col-lg-12 grid-margin stretch-card"  *ngIf="ShowAddItem">
+        <div class="new-screen" style="padding:10px;width: 100%; margin: 12px; border-radius: 15px; background-color: #f8f9fa;">
+            <div style="display: flex;">
+                <h1>Add New Item: </h1>
+                <i class="fas fa-times" style=" cursor: pointer;;margin-left: auto; margin-right: 10px;font-size: 20px;" (click)="CloseAddNewItem()"></i>
+            </div>
+            <div style="display:flex;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Display Name :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; margin-left:81px;width: 282px;" placeholder="Enter Display Name" 
+                [(ngModel)]="NewItem.displayName" name="Title"> 
+            </div>
+            <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Name :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; width: 282px; margin-left:133px;"  placeholder="Enter Name" 
+            [(ngModel)]="NewItem.name" name="Title"> 
+            </div>
+            <div style="display:flex;"> 
+            <p style="margin-top: 10px;margin-right: 10px; ">
+            <b> Type :</b></p> 
+            <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; 
+            margin-left:139px;width: 284px;"  placeholder="Enter Type" 
+            [(ngModel)]="NewItem.type" name="Headers"> 
+            </div>
+            <div style="display:flex; margin-top: 13px;"> 
+            <p style="margin-top: 10px;margin-right: 10px;">
+            <b> Action Screen :</b></p> 
+            <textarea class="form-control"  id="exampleFormControlTextarea1" rows="6"  style="margin-left: 77px; width: 500px;"
+            [(ngModel)]="NewItem.actionScreen"  placeholder="Enter Action Screen"></textarea>
+            </div>
+
+            <div style="display: flex;margin-top: 8px;justify-content: flex-end;">
+            <button id="doAddToBasket" name="doAddToBasket" class=" m-2 btn btn-success" type="submit" (click)="SaveItem()" >
+            <span class="arrow_brown">Save Option <i class="fas fa-long-arrow-alt-right"></i></span>
+        </button> 
+        </div>
+        </div>
+    </div>
+    <!-- End Add New Item -->
+
+    <!-- Start Items Table -->
+    <div class="col-lg-12 grid-margin stretch-card" *ngIf="General.items.length>0">
+        <div class="card">
+        <div class="card-body">
+            <div style="display: flex; justify-content: space-between;">
+                <h4 class="card-title" style="color:#ffbd00">Items table</h4>
+        </div>
+        
+            <table class="table table-bordered action-table">
+            <thead>
+                <tr>
+                <th style="font-weight: bold; color: #000;  background-color: #fffbef; padding: 15px;"> Display Name </th>
+                <th style="font-weight: bold; color: #000;  background-color: #fffbef;  padding: 15px;"> Name </th>
+                <th style="font-weight: bold; color: #000;  background-color: #fffbef;padding: 15px;"> Type </th>
+                <th style="font-weight: bold; color: #000;  background-color: #fffbef; padding: 15px;"> Action Screen </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of General.items  ; let i = index;">
+                <td [ngClass]="{'highlightItem': selectedItemIndex === i}"  style="display: flex; justify-content: space-between; padding: 15px;">
+                    <div style=" cursor: pointer;" (click)="GetOptions(item ,i)" >
+                        {{item.displayName}}
+                    </div>
+                     <div>
+                        <i class="fas fa-plus" style="cursor: pointer; color: #000;" *ngIf="item.type == 'DropDown'" 
+                         (click)="AddNewOption(item)"></i>
+                        <i class="fas fa-trash-alt ml-2" style="cursor: pointer; color: #ff0054;" title="Delete Item"  (click)="DeleteItem(item.id)" ></i>
+                    </div>
+                </td>
+                <td  [ngClass]="{'highlightItem': selectedItemIndex === i}"> {{item.name}} </td>    
+                <td  [ngClass]="{'highlightItem': selectedItemIndex === i}"> {{item.type}} </td>    
+                <td  [ngClass]="{'highlightItem': selectedItemIndex === i}" style="padding: 0;">
+                 <div style="display: flex; justify-content: space-between;">
+                    <div style=" width: 17px;height: 34px;" [style.background-color]="GetScreenColor(item.actionScreenId)"></div>
+                   <span style="margin: auto 2px;"> {{GetScreenName(item.actionScreenId)}} </span> 
+                  <button class="btn btn-primary" (click)="open(AddAction,item)"  *ngIf="item.type == 'Icon'"  [ngClass]="{'btn-change': selectedItemIndex === i}"
+                  style="padding: 7px; background-color:#ffbd00; border: none;"> Add Action Screen</button>
+                </div>
+                </td>    
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    <!-- End Items Table -->
+
+
+<!-- Start Add New Options -->
+<div class="col-lg-12 grid-margin stretch-card"  *ngIf="ShowAddOption">
+    <div class="new-screen" style="padding:10px;width: 100%; margin: 12px; border-radius: 15px; background-color: #f8f9fa;">
+        <div style="display: flex;">
+            <h1>Add New Option: </h1>
+            <i class="fas fa-times" style=" cursor: pointer;;margin-left: auto; margin-right: 10px;font-size: 20px;" (click)="CloseNewOption()"></i>
+        </div>
+        <div style="display:flex;"> 
+        <p style="margin-top: 10px;margin-right: 10px;">
+        <b> Value :</b></p> 
+        <input type="text" class="mt-1" style="border-radius: 3px;border: 1px solid #7f8c8d; margin-left:81px;width: 282px;" placeholder="Enter Value" 
+            [(ngModel)]="NewOption.value" name="Title"> 
+        </div>
+
+        <div style="display: flex;margin-top: 8px;justify-content: flex-end;">
+            <button id="doAddToBasket" name="doAddToBasket" class=" m-2 btn btn-success" type="submit" (click)="SaveOption()" >
+              <span class="arrow_brown">Save Option <i class="fas fa-long-arrow-alt-right"></i></span>
+            </button> 
+        </div>
+    </div>
+</div>
+<!-- End Add New Options -->
+
+
+<!-- Start Options Table -->
+  <div class="col-lg-12 grid-margin stretch-card" *ngIf="General.itemOptions.length>0">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title" style="color: #390099">Options table</h4>
+        <table class="table table-bordered action-table">
+          <thead>
+            <tr>
+              <th style="font-weight: bold; color: #000; background-color:#faf7ff ; padding: 10px;"> Id </th>
+              <th style="font-weight: bold; color: #000; background-color:#faf7ff; padding: 10px;"> Value </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let option of General.itemOptions">
+              <td  style="padding:10px"> {{option.id}} </td>
+              <td  style="padding:10px"> 
+                <div style="display: flex; justify-content: space-between;">
+                    {{option.value}} 
+                <i class="fas fa-trash-alt ml-2" style="cursor: pointer; color: #ff0054;" title="Delete Option" (click)="DeleteOption(option.id)" ></i>
+                </div>
+              </td>    
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ <!-- End Options Table -->
+
+
+ <!-- Start Add Action For Item -->
+<ng-template #AddAction let-modal> 
+    <div class="modal-body-AddAction">
+      <h2 style="margin-left: 9px;">Select Action Screen </h2>
+      <div class="select ml-2">
+        <select name="selectTemplate" id="selectTemplate" (change)="GetScreenId($event.target)">
+            <option selected value="0">Select Action Screen</option>
+            <option *ngFor="let screen of General.screens" [value]="screen.id">{{screen.name}}</option>
+        </select>      
+      </div>
+    <div style="display: flex;justify-content: end;margin-top: 20px;">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');">Close</button> 
+            <button class="btn btn-success ml-3"  (click)="SaveActionScreen();modal.close('Save click');"> Save </button>
+        </div>
+    </div>
+  </ng-template>
+ <!--  End Add Action For Item -->
+
+ <!-- Start Add NextScreen Screen -->
+<ng-template #NextScreen let-modal> 
+    <div class="modal-body-AddAction">
+      <h2 style="margin-left: 9px;">Select Next Screen </h2>
+      <div class="select ml-2">
+        <select name="selectTemplate" id="selectTemplate" (change)="GetNextScreenId($event.target)">
+            <option selected value="0">Select Next Screen</option>
+            <option *ngFor="let screen of General.screens" [value]="screen.id">{{screen.name}}</option>
+        </select>      
+      </div>
+    <div style="display: flex;justify-content: end;margin-top: 20px;">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');">Close</button> 
+            <button class="btn btn-success ml-3"  (click)="SaveNextScreen();modal.close('Save click');"> Save  </button>
+        </div>
+    </div>
+  </ng-template>
+ <!--  End Add NextScreen Screen -->
+
+
+  <!-- Start Add PrevScreen Screen  -->
+<ng-template #PrevScreen let-modal> 
+    <div class="modal-body-AddAction">
+      <h2 style="margin-left: 9px;">Select Prev Screen </h2>
+      <div class="select ml-2">
+        <select name="selectTemplate" id="selectTemplate" (change)="GetPrevScreenId($event.target)">
+            <option selected value="0">Select Prev Screen</option>
+            <option *ngFor="let screen of General.screens" [value]="screen.id">{{screen.name}}</option>
+        </select>      
+      </div>
+    <div style="display: flex;justify-content: end;margin-top: 20px;">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');">Close</button> 
+            <button class="btn btn-success ml-3"  (click)="SavePrevScreen();modal.close('Save click');"> Save </button>
+    </div>
+    </div>
+  </ng-template>
+ <!--  End Add PrevScreen Screen -->

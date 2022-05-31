@@ -1,0 +1,9 @@
+<ng-container *ngIf="deal">
+    Lastname: {{deal.lastname}}
+    <ng-template [ngIf]='deal.lastname=="1"'>
+      <div>  This is the 1st Template {{deal.lastname}}</div>
+    </ng-template>
+    <ng-template [ngIf]='deal.lastname=="2"'>
+    <div>This is the 2nd Template  {{deal.lastname}}</div>
+    </ng-template>
+</ng-container>

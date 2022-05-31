@@ -1,0 +1,142 @@
+<div class="container-scroller">
+  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1" style="background-color: #1269db!important;color: #fff;">
+      <a href="" class="logo-link">
+        <h3 class="logo-capsource" style=" width: 237px;height: 62px;align-items: center;  display: flex;justify-content: center;">
+        <span class="capSource">Lenders Management</span></h3></a>
+        <ul class="navbar-nav navbar-nav-right ml-auto">
+          <i class="fas fa-arrow-left navbar-icons" [routerLink]="['/deals']"></i>
+        </ul>
+       <button class="navbar-togglernavbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas"> <span class="icon-menu"></span></button>
+    </div>
+  </nav>
+</div>
+
+	<div class="row" style="margin-top: 65px">
+  <div class="col-md-12">
+    <div class="card">
+      <div style="padding: 0.75rem 1.25rem;border-bottom: 1px solid rgba(0, 0, 0, 0.125);">
+        <div class="d-flex align-items-center">
+          <h4 class="card-title" style="color: #676767">Add Organization</h4>
+          <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal" (click)="editing=false"
+          style="background: #1572e8!important;border-color: #1572e8!important;border-radius: 100px ;padding: 0.65rem 1.4rem;font-size: 14px;opacity: 1">
+            <i class="fa fa-plus " style="    margin-right: 7px;font-size: 15px; " ></i>Add</button>
+        </div>
+      </div>
+
+
+      <!-- <div class="col-md-6 col-lg-3 mt-2">
+        <div class="form-group">
+          <input type="search" class="form-control" id="email2" placeholder="Search Organization" [(ngModel)]="LenderName" >
+        </div>
+      </div> -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="basic-datatables" class="display table table-striped table-hover action-table " >            <!-- table-bordered -->
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone number</th>
+                <th>State</th>
+                <th>Status</th>
+                <th style="text-align: center;">Edit</th>
+                <th style="text-align: center;">Delete</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <!-- | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize -->
+              <tr *ngFor="let Organization of General.Organizations   ">
+                <td  style="cursor: pointer;" [routerLink]="['/lenders',Organization.id]" >{{Organization.name}}</td>
+                <td>{{Organization.address}}</td>
+                <td>{{Organization.phoneNumber}}</td>
+                <td>{{Organization.states}}</td>
+                <td>{{Organization.isActive?"Active":"Inactive"}}</td>
+                <td style="text-align: center;">
+                  <!-- <button class="btn btn-primary"style="background-color: #1572e8!important;border-color: #1572e8!important;padding: 8px 10px;"
+                    data-toggle="modal" data-target="#addRowModal" (click)="EditOrganization(Organization)">Edit</button> -->
+
+                    <i class="fas fa-edit" data-toggle="modal" data-target="#addRowModal" (click)="EditOrganization(Organization)"
+                    style="cursor: pointer; color: #1572e8!important;"></i>
+                  </td>
+                <td style="text-align: center;">
+                  <i class="fas fa-trash-alt" style="cursor: pointer; color: #f25961!important;" (click)="DeleteOrganization(Organization)"></i>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <!-- <div style="display:flex; justify-content: center; align-items: center; padding: 20px;">
+            <ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header no-bd">
+        <h5 class="modal-title" style="font-size: 20px;">
+          <span class="fw-mediumbold">
+          New</span>
+          <span class="fw-light">
+           Organization
+          </span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <p class="small">Create a new row using this form, make sure you fill them all</p> -->
+        <form  (ngSubmit)="f.form.valid && onSubmit() "  #f="ngForm">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group form-group-default">
+                <label>Organization name</label>
+                <input type="text" class="form-control" name="Name" [(ngModel)]="OrgModel.name"
+                 #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid  }" required >
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="form-group form-group-default">
+                <label>Phone number</label>
+                <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="OrgModel.phoneNumber"
+                #phoneNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phoneNumber.invalid }" required  >
+              </div>
+            </div>
+            <div class="col-md-6 pr-0">
+              <div class="form-group form-group-default">
+                <label>Address</label>
+                <input type="text" class="form-control" name="address" [(ngModel)]="OrgModel.address"
+                #address="ngModel" [ngClass]="{ 'is-invalid': f.submitted && address.invalid }" required >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>State</label>
+                <input  type="text" class="form-control" name="states" [(ngModel)]="OrgModel.states"
+                #state="ngModel" [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer no-bd" style="padding: 0;">
+            <button type="submit" id="addRowButton" class="btn btn-primary" style="background-color: #26de81;border: none; padding: 13px 30px;"
+            >{{editing?'Edit':'Add'}}</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" style="background-color: #ff4d4d;border: none;" (click)="closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+

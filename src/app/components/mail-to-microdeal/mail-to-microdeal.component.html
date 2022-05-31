@@ -1,0 +1,136 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="container-scroller">
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row ">
+        <div class="navbar-brand-wrapper d-flex align-items-center" style="overflow-x: inherit;">
+            <a class="navbar-brand brand-logo" href="index.html">
+                <div class="logo-holder logo-6">
+                    <a href="">
+                        <h3> <span>CapSource Manager</span></h3>
+                    </a>
+                </div>
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+            <h5 class="mb-0 font-weight-medium d-none d-lg-flex" style="font-size: 20px;">Assign Mail To MicroDeal</h5>
+            <button class="navbar-toggler
+         navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+</div>
+
+<div class="input-group mb-3" style="width: 50%;margin-top: 85px;margin-left: 11px;">
+    <span style="    margin-top: 10px; margin-right: 7px;font-size: 15px;font-weight: bold;">- Enter Message Id:</span>
+    <input type="text" class="form-control" placeholder="Message Id" style="border-radius: 5px;" aria-label="Username"
+        aria-describedby="basic-addon1" [(ngModel)]="General.messageid">
+    <button type="button" class="btn btn-success ml-2" (click)="GetMessageId()">Find</button>
+</div>
+
+<div class="content inbox container-fluid" *ngIf="General.Mail">
+    <div class="row clearfix">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            <ul class="mail_list list-group list-unstyled">
+                <li class="list-group-item unread">
+                    <div class="media" style="cursor: pointer;">
+                        <div class="media-body">
+                            <div class="media-heading" (click)="togglebody=!togglebody">
+                                <span *ngIf="General.Mail?.direction == 1" class="mr-2"
+                                    style="background-color: #2ecc71; color: #fff; padding: 2px 4px; border-radius: 14px;">
+                                    <i class="fas fa-envelope-square"></i>
+                                </span>
+                                <span *ngIf="General.Mail?.direction == -1" class="mr-2"
+                                    style="background-color: #b2bec3; color: #fff; padding: 2px 4px; border-radius: 14px;">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                                <span *ngIf="General.Mail?.direction == 2" class="mr-2"
+                                    style="background-color: #b2bec3; color: #fff; padding: 2px 4px; border-radius: 14px;">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </span>
+                                <a class="m-r-10"> {{General.Mail?.fromAddress}}</a>
+                                <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">
+                                        {{General.Mail?.date | date }}
+                                        <br> {{General.Mail?.date | date:'shortTime'}}</time><i
+                                        class="zmdi zmdi-attachment-alt"></i>
+                                </small>
+                                <p class="msg">{{General.Mail?.subject}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div *ngIf="togglebody" class=" email-body" style="background-color: #ecf0f1;">
+                <div [innerHTML]="General.Mail?.body" class="mailBody container"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="input-group mb-3" style="width:35%;margin-top: 10px;margin-left: 11px;" *ngIf="General.Mail">
+    <label for="" style="margin: 10px 5px 0 0;"><b> - Enter MicroDeal Number:</b></label>
+    <input type="text" class="form-control" placeholder="MicroDeal Number" style="margin-left: 5px; border-radius: 6px;"
+        aria-label="MicroDeal Number" aria-describedby="basic-addon1" [(ngModel)]="MicroDealId">
+    <button type="button" class="btn btn-success ml-2" (click)="AssignMailToMicroDeal()">Assign</button>
+</div>
+
+<div class="mt-2 ml-2" *ngIf="General.Mail">
+    <span for="" style="margin: 10px 5px 0 0;"><b>- Select Macro Deals:</b></span>
+    <select name="slctTemp" id="slct" (change)="GetDealScenarios($event)" class="select">
+        <option selected value="0">All Macro Deal</option>
+        <option *ngFor="let MacroDeal of currentDeals"  value="{{MacroDeal.id}}">
+            {{MacroDeal.title}}</option>
+    </select>
+</div>
+
+<div class="mt-2 ml-2" *ngIf="General.Scenarios">
+    <span for="" style="margin: 10px 5px 0 0;"><b>- Select Scenario:</b></span>
+    <select name="slctTemp" id="slct" (change)="GetScenarioGroups($event)" class="select">
+        <option selected value="0">All Scenarios</option>
+        <option *ngFor="let Scenario of General.Scenarios" value="{{Scenario.id}}">{{Scenario.title}}</option>
+    </select>
+</div>
+
+<div class="mt-2 ml-2" *ngIf="General.groups">
+    <span for="" style="margin: 10px 5px 0 0;"><b>- Select Group:</b></span>
+    <select name="slctTemp" id="slct" (change)="GetGroupMicroDeals($event)" class="select">
+        <option selected value="0">All Group </option>
+        <option *ngFor="let Group of General.groups" value="{{Group.id}}">{{Group.title}}</option>
+    </select>
+</div>
+
+<div class="mt-2 ml-2" *ngIf="General.microdeals">
+    <span for="" style="margin: 10px 5px 0 0;"><b>- Select Micro Deal:</b></span>
+    <select name="slctTemp" id="slct" (change)="GetMicroDealId($event)" class="select">
+        <option selected value="0">All Micro Deals</option>
+        <option *ngFor="let MicroDeal of General.microdeals"  value="{{MicroDeal.id}}">
+            {{MicroDeal.title}}</option>
+    </select>
+    <button *ngIf="General.microdeals" type="button" class="btn btn-success ml-2"
+        (click)="AssignMailToMicroDeal()">Assign</button>
+</div>
+
+<!-- <div *ngIf="General.Scenarios" class="ml-3 mt-3">
+      <div *ngFor="let Scenario of General.Scenarios">
+        <div>
+            <span (click)="GetScenarioGroups(Scenario)" class="ml-1" style="cursor: pointer;">- {{Scenario.title}} </span>
+        </div>
+        <br>
+        <div *ngFor="let group of Scenario.groups" class="ml-3" style="cursor: pointer;">
+            <span class="ml-2" (click)="GetGroupMicroDeals(group)" ><b>- {{group.title}}</b></span>
+            <div class="select mt-2 ml-2">
+                <select name="slctTemp" id="slct" (change)="GetMicroDealId($event)"  *ngIf="group.microdeals" >
+                    <option selected value="0">Select MicroDeal</option>
+                    <option *ngFor="let MicroDeal of group.microdeals" [ngValue]="MicroDeal.id" value="{{MicroDeal.id}}">{{MicroDeal.title}}</option>
+                </select>  
+                <button  *ngIf="group.microdeals" type="button" class="btn btn-success ml-2" (click)="AssignMailToMicroDeal()">Assign</button>
+            </div>
+        </div>  
+        <br>
+      
+      </div>
+  </div> -->

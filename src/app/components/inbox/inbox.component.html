@@ -1,0 +1,98 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  
+<div style="margin-top: 90px;">   <section class="content inbox">
+    <div class="container-fluid" *ngFor="let email of mails">
+      <div class="row clearfix">
+        <div class="col-md-12 col-lg-12 ">
+          <ul class="mail_list list-group list-unstyled">
+
+            <li class="list-group-item unread">
+              <div class="media" style="cursor: pointer;">
+                <div class="pull-left">
+                  <div class="controls">
+                    <div class="checkbox">
+                      <input type="checkbox" id="basic_checkbox_2">
+                      <label for="basic_checkbox_2"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">
+                    
+                    <!-- Direction Icons  -->
+                    <span *ngIf="email.direction == 1" class="mr-2" style="background-color: #2ecc71;
+                         color: #fff;
+                         padding: 2px 4px;
+                         border-radius: 14px;">
+                      <i class="fas fa-envelope-square"></i>
+                    </span>
+                    <span *ngIf="email.direction == -1" class="mr-2" style="background-color: #b2bec3;
+                         color: #fff;
+                         padding: 2px 4px;
+                         border-radius: 14px;">
+                      <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span *ngIf="email.direction == 2" class="mr-2" style="background-color: #b2bec3;
+                          color: #fff;
+                          padding: 2px 4px;
+                           border-radius: 14px;">
+                      <i class="fas fa-angle-double-right"></i>
+                    </span>
+
+                    <!-- From -->
+                    <a class="m-r-10"> {{email.fromAddress}}</a>
+                    <span class=" ml-2 badge bg-green">Work</span>
+
+                    <!-- Mail date  -->
+                    <small class="float-right text-muted"><time class="hidden-sm-down"
+                        datetime="2017">{{email.date | date }} <br> {{email.date | date:'shortTime' }}</time><i
+                        class="zmdi zmdi-attachment-alt"></i> </small>
+
+                  </div>
+
+             
+                     <p class="msg" (click)="getMailBody(email.id , email.fromAddress)">{{email.subject}}</p> 
+             
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+
+   
+    
+        <div class="row">
+        <div *ngIf="mailBody"  class="col-md-8" >
+            <div *ngIf="mailBody.id == email.id" [innerHTML]="mailBody.body"
+             class="mailBody"></div>
+         </div>
+ 
+         <div class=" col-md-3" *ngFor="let deal of Contact">
+            
+            <ul class="list-arrow" >
+                <li>
+                  <h4> <b>   {{deal.pipeDriveDeal.data.title}}</b> </h4>
+                </li>
+                <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Value:</span>
+                  {{deal.pipeDriveDeal.data.value|number}}</li>
+                <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Currency:</span>
+                  {{deal.pipeDriveDeal.data.currency}}</li>
+                <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Creation Date:
+                  </span>{{deal.pipeDriveDeal.data.add_time}}</li>
+                <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Update time:</span>
+                  {{deal.pipeDriveDeal.data.update_time}}</li>
+                </ul>
+                <button class="btn btn-primary" (click)="assginDeal(email.id , deal.id)">Assign Deal</button>
+            </div>
+     
+     </div>
+
+
+    </div>
+  </section>
+</div>

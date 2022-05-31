@@ -1,0 +1,594 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<!-- <h2 style="margin-top: 20px;">{{ name }}</h2>
+<div *ngFor="let value of values; let i = index"> 
+  <input type="text" [(ngModel)]="value.value" #name="ngModel" name="value{{i}}">
+  <button (click)="removevalue(i)">Remove</button>
+</div>
+<button (click)="addvalue()">ADD</button>
+ -->
+
+
+<div class="container-scroller">
+  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1"
+      style="background-color: #131921;color: #fff;">
+      <a href="" style="text-decoration: none; color:#fff">
+        <h3
+          style="width: auto;border-radius: 0; background: #ff5722;margin: 0;padding: 21px;  border-radius: 5px;height: auto;">
+          <span>CapSource Manager</span>
+        </h3>
+      </a>
+      <ul class="navbar-nav navbar-nav-right ml-auto">
+
+        <i class="fas fa-sync sync" style="color: #fff;" (click)="Sync()"></i>
+        <span *ngIf="this.General.LoadSync?.syncEndDate == null">Synchronizing <div class="spinner-border mx-2"
+            role="status"></div></span>
+        <span *ngIf="this.General.LoadSync?.syncEndDate?.length >0">Last sync date is :
+          {{this.General.LoadSync?.syncEndDate| date:'short'}}</span>
+        <i class="fas fa-users-cog inbox" style="color: #fff;" [routerLink]="['/loan']" title="InTake Admin"></i>
+        <i class="fab fa-ideal inbox" style="color: #fff;" [routerLink]="['/mailToMicrodeal']"></i>
+        <i class="fas fa-envelope-open-text inbox" style="color: #fff;" [routerLink]="['/inbox']"></i>
+        <!-- <i class="fas fa-upload inbox" style="color: #fff;" [routerLink]="['/UploadGlobalDataSource']"></i> -->
+        <button class="btn  create-new-case" (click)="openLg(CreateCase)">Create new case</button>
+
+      </ul>
+      <button class="navbar-togglernavbar-toggler-right d-lg-none align-self-center" type="button"
+        data-toggle="offcanvas">
+        <span class="icon-menu"></span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<div class="card" style="margin-top: 55px;">
+  <!-- Start Mapping Table -->
+
+  <div class="col-md-12">
+    <div class="card case-table-container">
+      <table class="table table-striped table-bordered action-table case-table" style="border:1.2px solid #0a1214 ;">
+        <thead>
+          <tr>
+            <th class="case-head" >Title</th>
+            <th class="case-head">Scenarios & Groups</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let Case of General.Cases; let i =index">
+            <td class="case-table-title">{{i+1}}- {{Case.title}}
+              <br>
+              <button class="btn creata-new-scenario mt-2"  (click)="open(CreateScenarioModal ,Case)">Create New Scenario</button>
+            </td>
+            <td class="case-table-senario">
+              <div *ngFor="let Scenario of Case.caseScenarios ; let index =index "
+                style="border-bottom:1px solid #ddd ;">
+                <div class="scenario-title-container">
+                  <span class="scenario-title" > {{Scenario.title}}
+                  </span>
+                  <div style="justify-content: flex-end;">
+                    <button class="btn show-group ml-3" (click)="showGroups(Scenario);ShowMappingTable()">
+                      {{ Scenario.showGroups ? 'Hide Group' : 'Show Groups' }}</button>
+                      <button class="btn card__link ml-3" (click)="open(CreateGroup ,Scenario )">Create New Group</button>
+                    <button class="btn card__link ml-3 mr-2" (click)="ShowCaseSenarioDataSource(Scenario,Case)">Data Sources</button>
+                  </div>
+                </div>
+
+                <ng-container *ngIf="Scenario.showGroups">
+                  <ng-container *ngFor="let group of Scenario.caseGroups; let i=index">
+                    <div class="group-title" (click)="showNameRanges(Scenario , group ,Case)">
+                      <button type="button" style="padding: 6px;" class="btn btn-outline-dark">{{group.title}} </button>
+                    </div>
+                    <br *ngIf="i==4">
+                  </ng-container>
+                </ng-container>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  <!-- End Mapping Table -->
+
+  <!-- Start Scenario -->
+  <div *ngIf="CaseGroupDataSource">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb" style="background-color: #335c67;  color: #fff;border-radius: 5px; padding: 4px 2px 4px 16px ; display: flex;">
+        <li class="breadcrumb-item" style="font-size: 20px; letter-spacing: 1px;">{{CaseTitle}}</li>
+        <li class="breadcrumb-item"  style="font-size: 20px;font-weight: bold; letter-spacing: 1px;">{{CaseScenarioTitle}}</li>
+        <li style="margin-left: auto;"><button class="btn " class="close-group" (click)="CaseGroupDataSource=false">Close Data Sources</button> </li>
+      </ol>
+    </nav>
+    <div class="col-md-12">
+      <div style="display: flex; justify-content: space-around; margin: 23px;">
+        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="DroppedDataSources($event)"
+          [dropZoneClassName]="'upload-data-source'" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            <span style="color:rgb(21, 40, 60)"> Drop Data Source Here </span>
+            <button type="button" class="btn btn-success ml-2"
+              style="padding: 5px 10px ; background-color: #0cc7b9; border-color: #0cc7b9; border-radius: 22px;"
+              (click)="openFileSelector()">Browse Data Source</button>
+          </ng-template>
+        </ngx-file-drop>
+        <span class="show-pervious-mapping" (click)="openPerviousMapping(previousMapping)">Show previous mapping</span>
+      </div>
+        <br>
+        <!-- <h5 style="cursor: pointer; text-align: center; width: 100%; font-size: 23px;padding: 11px; border-radius: 6px; color: rgb(21, 40, 60)"
+            (click)="ShowMappingTable();isDisabled = !isDisabled">{{ isDisabled ? 'Hide Mapping Cells Table' : 'Show Mapping Cells Table' }}</h5> -->
+
+        <table class="table table-bordered  mt-4"
+          style="border-collapse: collapse;  width: 100%;border: 2px solid #335c67; margin: 20px 0;"
+          *ngIf="General.DataSources?.length>0">
+          <thead>
+            <tr>
+              <th style="color: #fff;text-align: center; font-size: 20px;  background-color: #335c67;">DataSource</th>
+              <th style="  color: #fff;  background-color: #335c67;text-align: center; font-size: 20px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dataSource of General.DataSources ; let i =index">
+              <td style="color: black; text-align:center;">{{i+1}}- {{dataSource.filename}}</td>
+              <td style="text-align: center; display: flex; justify-content: space-evenly;font-size: 18px;">
+
+                <!-- <i class="fas fa-sync " style="color: #212529; cursor: pointer;" (click)="SyncDataSource(dataSource)" title="Sync"></i> -->
+                 <button class="btn btn-success sync-ds" (click)="SyncDataSource(dataSource)">Sync</button> 
+                <i class="fas fa-exchange-alt" title="Mapping Cell" style="cursor: pointer;"
+                  (click)="GetDataSourceNameRange(dataSource)"></i>
+                <a style="color: #000000; margin-left: 10px; cursor: pointer;"
+                  href="https://groundlease.app.box.com/file/{{dataSource.boxId}}" target="_blank" title="View Excel"
+                  class="download-file"> <i class="fas fa-eye " style="font-size: 19px;margin-left: 2px;"></i></a>
+                <i class="fas fa-trash-alt custom-delete" title="Delete" style="margin-left: 0; cursor: pointer;"
+                  (click)="DeleteDataSource(dataSource.id)"></i>
+
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+       
+    </div>
+
+
+
+  </div>
+  <!-- End Scenario -->
+
+  <!-- Start group -->
+  <div *ngIf="ViewReadFormula">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb"  style="background-color: #335c67;  color: #fff;border-radius: 1px; padding: 4px 2px 4px 16px ; display: flex;">
+        <li class="breadcrumb-item" style="font-size: 20px;letter-spacing: 1px;">{{SceTitle}}</li>
+        <li class="breadcrumb-item" style="font-size: 20px;letter-spacing: 1px;">{{ScenarioGroupTitle}}</li>
+        <li class="breadcrumb-item" style="font-size: 20px;letter-spacing: 1px; font-weight: bold;">
+          {{ClickedGroup.title}}</li>
+        <li style="margin-left: auto;"><button class="btn " class="close-group" (click)="closeGroup()">Close Group</button> </li>
+      </ol>
+    </nav>
+    <div class="container-fluid" >
+    <ng-container *ngIf="General.GroupDataSource?.length>0">
+      <h1 class="currrent-data-table">Current Data Tables</h1>
+      <table class="table table-bordered current-table" >
+        <thead>
+          <tr>
+            <th style="color:#1c6d81 ;font-weight: bold;"> File Name </th>
+            <th style="color:#1c6d81 ;font-weight: bold;"> Title </th>
+            <th style="color:#1c6d81;font-weight: bold;"> Formula </th>
+            <th style="color:#1c6d81;font-weight: bold;"> Name Range </th>
+            <th style="color:#1c6d81;font-weight: bold;"> Columns </th>
+            <th style="color:#1c6d81;font-weight: bold;"> Headers </th>
+            <th style="color:#1c6d81;font-weight: bold;"> Intro </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of General.GroupDataSource">
+            <ng-container *ngIf="item.fileId!=null">
+              <td>{{getDatasourceFileName(item.fileId)}}</td>
+            </ng-container>
+            <ng-container *ngIf="item.fileId==null">
+              <td></td>
+            </ng-container>
+            <td style="display: flex; justify-content: space-between;">{{item.title}}</td>
+            <td> {{item.formula}} </td>
+            <td> {{item.namedRange}} </td>
+            <td> {{item.columns}} </td>
+            <td> {{item.headers}} </td>
+            <td style="white-space: pre-line; width: 380px;"> {{item.intro}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+    </ng-container>
+  </div>
+    <div class="container-fluid">
+      <h5 class="currrent-data-table">Define New Data Table</h5>
+      <div style="display: flex;" class="mt-2">
+        <p style="margin-top: 10px;margin-right: 82px; font-size:20px"><b>Select File:</b></p>
+        <select class="drop" (change)="DataSourceNameRange($event)" style="color: #000;">
+          <option selected>Select File:</option>
+          <option *ngFor="let data of General.DataSources" value="{{data.id}}">
+            <span *ngIf="data.macroDealId==null">[ Global ] </span> <span *ngIf="data.macroDealId!=null">[ Local ]
+            </span>{{data.filename}}
+          </option>
+        </select>
+      </div>
+      <div style="display:flex; margin-block:25px;">
+        <p style="margin-top: 10px;margin-right: 43px;  font-size:20px">
+          <b>Select Tab:</b>
+        </p>
+        <div class=" mt-1" style="margin-left: 38px;">
+          <select class="drop" (change)="SelectNameRange($event)" style="color: #000;">
+            <option selected>Select Name Range:</option>
+            <ng-container *ngFor="let nameRange of General.NameRange">
+              <option *ngIf="nameRange.type == 'Tab' || nameRange.type == 'Drawing' " value="{{nameRange.label}}">
+                [ {{nameRange.type}} ] {{nameRange.label}}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+        <br>
+
+      </div>
+    </div>
+
+
+    <div *ngIf="ViewReadFormula && General.Sheets.length>0 ">
+      <div *ngFor="let item of General.Sheets"
+        style="padding: 10px;border-radius: 4px; margin-block: 20px; background-color: #fff;">
+        <div style="display: flex;">
+          <svg preserveAspectRatio="xMidYMid meet" data-bbox="40.026 40.026 319.948 319.948"
+            viewBox="40.026 40.026 319.948 319.948" height="45" width="45" xmlns="http://www.w3.org/2000/svg"
+            data-type="color" style="margin-right:10px ; width: 35px;" role="presentation" aria-hidden="true">
+            <defs>
+              <style>
+                #comp-jxg2gae811 svg [data-color="1"] {
+                  fill: #000000;
+                }
+              </style>
+            </defs>
+            <g>
+              <path
+                d="M200 40.026c-88.351 0-159.974 71.623-159.974 159.974S111.649 359.974 200 359.974c88.352 0 159.974-71.623 159.974-159.974S288.352 40.026 200 40.026zm17.786 228.68h-50.202l-.638-1.422.054-.117-12.914-28.099v-.001l-35.254-76.47h51.493l22.422 48.548 36.928-79.852h51.494l-63.383 137.413z"
+                fill="#000001" data-color="1"></path>
+              <path fill="#000001" opacity=".3"
+                d="M192.747 211.146l-25.039 57.56-10.601-23.065 17.82-73.079 17.82 38.584z" data-color="1"></path>
+            </g>
+          </svg>
+          <input type="checkbox" style="margin: 15px 0px;" (change)="CheckExcel($event,item)"
+            [attr.checked]="item.isAvailable">
+          <h2 style="margin-top: 4px;margin-left: 7px;font-size: 19px;">{{item.label}}</h2>
+        </div>
+        <table class="table table-bordered mt-3">
+          <tbody>
+            <tr *ngFor="let x of GetRowsx(item); let i = index">
+              <td *ngFor="let cell of GetRowCellsx(x ,item)"> {{cell.value}} </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-3">
+              <p style="margin-top: 10px;margin-right: 10px;">
+                <b> Title :</b>
+              </p>
+              <input type="text" class="form-control" style="border-radius: 3px;border: 1px solid #7f8c8d;"
+                placeholder="Enter Title" [(ngModel)]="item.title" name="Title" required>
+            </div>
+            <div class="col-md-3">
+              <p style="margin-top: 10px;margin-right: 10px;">
+                <b> Columns :</b>
+              </p>
+              <input type="number" class="form-control" style="border-radius: 3px;border: 1px solid #7f8c8d;"
+                placeholder="Enter Columns" [(ngModel)]="item.GroupDataSource.columns" name="Columns">
+            </div>
+            <div class="col-md-3">
+              <p style="margin-top: 10px;margin-right: 10px; ">
+                <b> Headers :</b>
+              </p>
+              <input type="text" class="form-control" style="border-radius: 3px;border: 1px solid #7f8c8d;"
+                placeholder="Enter Headers" [(ngModel)]="item.GroupDataSource.headers" name="Headers">
+            </div>
+            <div class="col-md-3">
+              <p style="margin-top: 10px;margin-right: 10px;">
+                <b> Intro :</b>
+              </p>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"
+                [(ngModel)]="item.GroupDataSource.intro" placeholder="Enter Intro"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="display: flex; justify-content: center;">
+        <button class="btn btn-primary" class="saveNameRanges" (click)="SaveAllNamedRanges()">Save</button>
+      </div>
+
+    </div>
+
+
+  </div>
+  <!-- End Group -->
+
+
+  <!-- Start Mapping Cell -->
+  <div *ngIf="openDataSourceForm" class="container-fluid">
+    <div class="mappingcell-container" >
+      <div  style="margin-top: 25px; ">
+        <div style="display: flex; justify-content: space-between;  color: #131921; padding: 5px; align-items: center;  border-radius: 5px;  ">
+          <h5 style="margin: 7px 4px; "><b style="color: #0cc7b9;">Mapping Cell </b> : {{DataSourceTitle}}</h5>
+          <i class="fas fa-times" style="margin-right: 6px;  font-size: 30px; cursor: pointer; color: #0cc7b9;" 
+            (click)="openDataSourceForm = false;"></i>
+        </div>
+        <div style="display: flex; margin-top: 20px;     margin-left: 14px;">
+          <h2 style="margin: 0;font-weight: 400;"> Select Tab :</h2>
+          <select class="drop" name="slctTemp" id="slct" style="margin-left: 85px; color: #000;"
+            (change)="GetInputVariables($event)">
+            <option selected>Tabs</option>
+            <option *ngFor="let NameRange of General.NameRange" value="{{NameRange.label}}">{{NameRange.label}}</option>
+          </select>
+        </div>
+        <div style="display: flex; margin-top: 20px;     margin-left: 14px;">
+          <h2 style="margin: 0;font-weight: 400;"> Select Variable :</h2>
+          <select class="drop" name="slctTemp" id="slct" style="margin-left: 45px; color: #000;" [(ngModel)]="Cell">
+            <option selected>Variables</option>
+            <option *ngFor="let variable of General.variables" value="{{variable}}">{{variable}}</option>
+          </select>
+        </div>
+        <div style="display: flex; margin-top: 20px;   margin-left: 14px;" *ngIf="General.NameRange?.length>0">
+          <h2 style="margin: 0; font-weight: 400;"> Select Type :</h2>
+          <select class="drop" name="slctTemp" id="slct" style="margin-left: 75px; color: #000;" (change)="initIntake($event)">
+            <option selected>Types</option>
+            <option *ngFor="let item of StartIntake" value="{{item.id}}">{{item.displayName}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Mapping Cell -->
+
+  <div class="col-lg-12 grid-margin stretch-card" *ngIf="openDataSourceForm">
+    <div class="card">
+      <div class="card-body" style="margin-top: 0; background-color: #f5f7f7;">
+        <table class="table table-striped table-bordered action-table" *ngIf="screenIds.length >0">
+          <thead>
+            <tr>
+              <th>Screen name</th>
+              <th>Items</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let screenId of screenIds">
+              <tr style="cursor: pointer;">
+                <td> {{getScreenName(screenId)}} </td>
+                <td>
+                  <p *ngFor="let item of GetScreenItems(screenId)">
+                    <input (change)="check($event , item)" type="checkbox" id="input{{item.id}}" name="itemid"
+                      class="mr-2" [(ngModel)]="item.checked" value="{{item.id}}"> {{item.name}}
+                  </p>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div style="float:right;margin: 10px 0;">
+          <button class="btn btn-success" style="background-color: #02884e;" (click)="SaveMapping()" *ngIf="screenIds.length>0">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Mapping -->
+
+
+  <!-- Create Sum Or  modal -->
+  <ng-template #SumOrModal let-modal>
+    <div class="modal-content-createScenario">
+      <div class="modal-body-createScenario" style="padding: 20px;">
+        <h5 style="letter-spacing: 1px;font-size: 23px; font-weight: 400;margin-bottom: 26px;">- Did you want SUM or OR
+          ?</h5>
+        <div style="display: flex ; flex-direction: row; justify-content: flex-end;">
+          <button class="btn btn-success" style="    background-color: #192a56; border-color: #192a56;"
+            (click)="SumOrOR(2)">Sum</button>
+          <button class="btn btn-danger" style="margin-left:14px" (click)="SumOrOR(1)">Or</button>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Start Create Scenario -->
+  <ng-template #CreateScenarioModal let-modal>
+    <div class="modal-body-DeleteScenario" style="padding: 20px;">
+      <p *ngIf="General.modalObject.title" style="font-size: 19px;"><b>{{General.modalObject.title}}</b></p>
+      <span style="font-size: 18px;"> Scenario Title : </span><input type="text" id="scenario" class="form-control mb-3"
+        style="border-color: #bbbbbb;border-radius: 5px;" [(ngModel)]="General.SceTitle">
+      <div style="margin-top: 28px;">
+        <button type="button" class="btn float-right ml-2" style="background-color: #02884e;color: #fff;"
+          (click)="CreateScenario();modal.close('Save click');">Create Scenario</button>
+        <button type="button" class="btn btn-outline-dark float-right"
+          (click)="modal.close('Save click');">Close</button>
+      </div>
+    </div>
+  </ng-template>
+  <!--  End Create Scenario -->
+
+  <!-- Start Create Group-->
+  <ng-template #CreateGroup let-modal>
+    <div class="modal-body-DeleteScenario" style="padding: 20px;">
+      <p *ngIf="General.modalObject.title" style="font-size: 19px;"><b>{{General.modalObject.title}}</b></p>
+      <span style="font-size: 18px;"> Group Title : </span><input type="text" id="scenario" class="form-control mb-3"
+        style="border-color: #bbbbbb;border-radius: 5px;" [(ngModel)]="General.GrpTitle">
+      <div style="margin-top: 28px;">
+        <button type="button" class="btn float-right ml-2" style="background-color:#02884e;color: #fff;"
+          (click)="createGroup();modal.close('Save click');">Create Group</button>
+        <button type="button" class="btn btn-outline-dark float-right"
+          (click)="modal.close('Save click');">Close</button>
+      </div>
+    </div>
+  </ng-template>
+  <!--  End Create Group -->
+
+
+  <!-- Start previous mapping  -->
+  <ng-template #previousMapping let-modal>
+    <div class="filess mt-4" *ngIf=" General.DataSources && General.DataSources.length>0">
+      <div class="col-md-12">
+        <div class="card">
+       
+          <table class="table table-striped table-bordered action-table">
+            <thead>
+              <tr>
+                <th style="color:rgb(21, 40, 60); background-color: #f5f5f5; text-align: center; font-size: 20px;">Files
+                </th>
+                <th style="color:rgb(21, 40, 60); background-color: #dcdde1; text-align: center; font-size: 20px;">Map
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of General.DataSources ; let i =index">
+                <td style="color: black; text-align:center;">{{i+1}}- {{item.filename}}</td>
+                <ng-container *ngFor="let map of item.dataSourceMaps">
+                  <td *ngIf="map.sheet!=null" style="text-align: center; display: flex; font-size: 18px; ">
+                    <table style="width: 100%;  border-collapse: collapse;
+                width: 100%;">
+                      <thead>
+                        <tr>
+                          <th
+                            style="color:rgb(21, 40, 60); background-color: #f5f5f5; text-align: start; font-size: 20px;">
+                            Sheet</th>
+                          <th
+                            style="color:rgb(21, 40, 60); background-color: #f5f5f5; text-align: start; font-size: 20px;">
+                            Cell</th>
+                          <th
+                            style="color:rgb(21, 40, 60); background-color: #f5f5f5; text-align: start; font-size: 20px;">
+                            Items</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style=" width: 30%; text-align: start;">{{map.sheet}}</td>
+                          <td style="width: 30%; text-align: start;">{{map.cell}} </td>
+                          <td style="width: 40%; text-align: start; letter-spacing: 1px; white-space: break-spaces;">{{getItemName(map.itemIds)}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #CurrentDataSources let-modal>
+    <ng-container *ngIf="General.GroupDataSource?.length>0">
+      <h1 style="text-align: center; color: #fff;background-color: rgb(21, 40, 60); width: auto;">Current Data Sources
+      </h1>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="color:black ;font-weight: bold;"> File Name </th>
+            <th style="color:black ;font-weight: bold;"> Title </th>
+            <th style="color:black;font-weight: bold;"> Formula </th>
+            <th style="color:black;font-weight: bold;"> Name Range </th>
+            <th style="color:black;font-weight: bold;"> Columns </th>
+            <th style="color:black;font-weight: bold;"> Headers </th>
+            <th style="color:black;font-weight: bold;"> Intro </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of General.GroupDataSource">
+            <ng-container *ngIf="item.fileId!=null">
+              <td>{{getDatasourceFileName(item.fileId)}}</td>
+            </ng-container>
+            <ng-container *ngIf="item.fileId==null">
+              <td></td>
+            </ng-container>
+            <td style="display: flex; justify-content: space-between;">{{item.title}}
+              <div class="float-right">
+
+              </div>
+            </td>
+            <td> {{item.formula}} </td>
+            <td> {{item.namedRange}} </td>
+            <td> {{item.columns}} </td>
+            <td> {{item.headers}} </td>
+            <td style="white-space: pre-line; width: 380px;"> {{item.intro}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-template>
+  <!-- End previous mapping  -->
+
+  <ng-template #CreateCase let-modal>
+    <div class="containers text-center">
+      <div style="padding:5px;">
+        <div style="background-color: #f6f7fd; padding: 30px;">
+          <div class="row justify-content-md-center" #content style="padding: 25px;">
+            <div class="col-md-12 head-info ">
+              <h1 class="main-title animate__animated animate__fadeInDown ">{{activeScreen?.title}}</h1>
+              <p class="sub-info animate__animated animate__fadeInDown" *ngIf="activeScreen?.subTitle!=null">
+                {{activeScreen?.subTitle}}</p>
+              <ng-container *ngFor="let container of sortActiveScreenContainers()">
+                <ng-container [ngSwitch]="container.type">
+                  <ng-container *ngSwitchCase="'Form'">
+                    <div class="row main-row" style="margin-top: 27px;"
+                      [ngClass]="{'justify-content-md-center' : container.items.length < 10}">
+
+                      <ng-container *ngFor="let item of container.items">
+                        <div style="margin-bottom: 10px;">
+
+                          <ng-container [ngSwitch]="item.type">
+
+                            <ng-container *ngSwitchCase="'Icons'">
+                              <div class="row justify-content-center animate__animated animate__fadeIn"
+                                style="margin: 50px 0 10px 0;">
+                                <div
+                                  [ngClass]="{'col': item.itemOptions.length > 6 , 
+                                                 'col-md-5' : item.itemOptions.length < 5 ,
+                                                'col-md-6' : item.itemOptions.length > 4 && item.itemOptions.length < 8 }"
+                                  *ngFor="let icon of item.itemOptions">
+
+                                  <div class="col custom-icon" style="cursor: pointer;"
+                                    (click)="MoveToScreen(icon.actionScreenId ,item ,icon.id );"
+                                    *ngIf="icon.actionScreenId!=null">
+                                    <i class="{{icon.value}}" style="font-size: 30px;"></i>
+                                    <p class="icon-title" style="letter-spacing: 2px;">{{icon.displayName}}</p>
+                                  </div>
+                                  <div class="col custom-icon" style="cursor: pointer;"
+                                    *ngIf="icon.actionScreenId==null">
+                                    <i class="{{icon.value}}" style="font-size: 30px;"></i>
+                                    <p class="icon-title" style="letter-spacing: 2px;">{{icon.displayName}}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+
+                          </ng-container>
+                        </div>
+                        <div class="w-100"
+                          *ngIf="container.items.length < 10 && container.containerDisplay !== 'Dynamic'  && 
+                    container.containerDisplay !== 'dynamicChild'  && item.type!='City' && item.type!='State' && item.type!='Zip' ">
+                        </div>
+                      </ng-container>
+                      <button class="btn btn-success save-new-case" (click)="Createcase();modal.close('Save click');"
+                        *ngIf="activeScreen?.title!='What is the primary asset type of your property?'">Save new
+                        case</button>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>

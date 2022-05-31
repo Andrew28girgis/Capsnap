@@ -1,0 +1,97 @@
+.highlight{
+background-color: #38ce3c; ;
+color: #fff; 
+}
+
+.highlightScreen{
+  background-color: #118ab2 ;
+  color: #fff; 
+}
+
+.highlightItem{
+    background-color: #ffbd00;
+    color: #fff;
+}
+  
+.add-new-screen-icon{
+    color: #fff !important;
+}
+
+.iconss{
+  color: #fff !important;
+}
+
+.btn-change{
+  background-color: #fff !important;
+  color: black;
+}
+
+.btn-change:hover{
+  background-color: #fff !important;
+  color: black;
+}
+
+.new-screen{
+    margin-top: 5px;background-color: #f1f2f6;padding-top: 5px;padding-left: 5px;border-radius: 3px;
+}
+
+.modal-body-AddAction{
+    height: auto;
+    padding: 22px;
+}
+  
+select {
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #2c3e50;
+    background-image: none;
+}
+  /* Remove IE arrow */
+select::-ms-expand {
+    display: none;
+}
+  /* Custom Select */
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #2c3e50;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: pointer;
+ }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #34495e;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+  }
+  /* Transition */
+  .select:hover::after {
+    color: #f39c12;
+  }
+
+  .card{
+    margin-top: 0;
+  }
+  .action-table tr:nth-child(even) { 
+    background-color: #f8f9fa;
+    }

@@ -1,0 +1,1250 @@
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.9)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+
+<ejs-dialog #Dialog id="rteDialog" [buttons]='dlgButtons' (overlayClick)="dialogOverlay()" [header]='header'
+  [visible]='false' [showCloseIcon]='true' [target]='target' (created)="dialogCreate()" [isModal]='true'>
+
+  <ng-template #content>
+    <div id="rteSpecial_char">
+      <h3> <b> Contact Data </b> </h3>
+      <div>
+        <div class="btn btn-primary m-1 " title="Firstname"
+          (click)="insertPersonalization('#Person.contact.firstName#')">
+          #Person.contact.firstName#
+        </div>
+        <i class="far fa-copy copy-handler " style="cursor: pointer; color: #222f3e;"
+          (click)="copyToClipboard('#Person.contact.firstName#')"></i>
+
+
+        <div class="btn btn-primary m-1" title="Lastname" (click)="insertPersonalization('#Person.contact.lastName#')">
+          #Person.contact.lastName# </div>
+        <i class="far fa-copy copy-handler" style="cursor: pointer; color: #222f3e;"
+          (click)="copyToClipboard('#Person.contact.lastName#')"></i>
+
+
+        <div class="btn btn-primary m-1" title="email" (click)="insertPersonalization('#Person.contact.email#')">
+          #Person.contact.email#</div>
+        <i class="far fa-copy copy-handler" style="cursor: pointer; color: #222f3e;"
+          (click)="copyToClipboard('#Person.contact.email#')"></i>
+
+
+        <div class="btn btn-primary m-1" title="phone" (click)="insertPersonalization('#Person.contact.phone#')">
+          #Person.contact.phone#</div>
+        <i class="far fa-copy copy-handler" style="cursor: pointer; color: #222f3e;"
+          (click)="copyToClipboard('#Person.contact.phone#')"></i>
+
+      </div>
+      <br> <br>
+      <h3> <b> Deal Data </b> </h3>
+      <div class="btn btn-danger m-1 labelHndler " title="title" (click)="insertPersonalization('#Deal.data.title#')">
+        #Deal.data.title#</div>
+      <i class="far fa-copy copy-handler" style="cursor: pointer; color: #222f3e;"
+        (click)="copyToClipboard('#Deal.data.title#')"></i>
+
+
+      <div *ngFor="let fields of anotherCustomFields ;let index = index;">
+        <div class="btn btn-danger m-1 labelHndler" title="Parameter.{{fields.fieldLabel}}"
+          (click)="insertPersonalization('#Parameter.'+fields.fieldLabel+'#')">
+          #Parameter.{{fields.fieldLabel}}#
+        </div>
+        <i class="far fa-copy copy-handler " style="cursor: pointer; color: #222f3e;"
+          (click)="copyToClipboard('#Parameter.'+fields.fieldLabel+'#')"></i>
+      </div>
+
+    </div>
+  </ng-template>
+
+</ejs-dialog>
+<div class="col-md-12 stretch-card">
+
+  <div class="card">
+    <div class="card-body">
+
+      <!-- Template -->
+      <div class="poplinks float-right">
+
+        <div type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-lgTemplate" title="Send Email"
+          (click)="reloadTemplates()"> Template</div>
+
+        <div class="modal fade bd-example-modal-lgTemplate" tabindex="-1" role="dialog"
+          aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+              <div class="modal-body" style="padding:10px;">
+                <p class="ml-5"><b>Select Template To Edit:</b></p>
+                <div class="select ml-5">
+                  <select name="slctTemp" id="slct"  [(ngModel)]='templateSelect'
+                   (change)="selectTemp($event.target)">
+                    <option selected value="47">Select Template</option>
+                    <option *ngFor="let temp of templatesName" [value]="temp"> {{temp}}
+                    </option>
+                  </select>
+                </div>
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label"> <b> Email subject /
+                        Template name :</b></label>
+                    <input type="text" class="form-control" [(ngModel)]="tempName" name="something"
+                      (keyup)="getTemplateName($event.target)">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label"> <b> Email body / Template
+                        body : </b> </label>
+                    <ejs-richtexteditor #customRTE [toolbarSettings]='tools' [(ngModel)]='contentDOC'
+                      [(value)]='contentDOC' name="contentDOC">
+                    </ejs-richtexteditor>
+
+                    <ejs-dialog #Dialog id="rteDialog" [buttons]='dlgButtons' (overlayClick)="dialogOverlay()"
+                      [header]='header' [visible]='false' [showCloseIcon]='true' [target]='target'
+                      (created)="dialogCreate()" [isModal]='true'>
+
+                    </ejs-dialog>
+                  </div>
+                </form>
+
+              </div>
+ 
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveTemp()">Save
+                  Template</button>
+                <button type="button" class="btn btn-primary" (click)="sendEmailForMicro()" data-dismiss="modal">Send
+                  Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-lgParam" (click)="getParam()">
+          Deal Parameters</div> -->
+
+        <div class="modal fade bd-example-modal-lgParam" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="card-header d-block d-md-flex">
+                <h5 class="mb-0">Fields</h5>
+              </div>
+              <div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
+                <div class=" col-sm-6 col-md-4 p-2  btn-wrapper"
+                  *ngFor="let fields of anotherCustomFields ;let index = index;">
+                  <div class="fieldInputs"  >
+                    <i class="fas fa-stream"></i> {{fields.fieldLabel}}
+                  </div>
+
+                  <br>
+
+                  <input class="field-input mt-3" name="inputName" type="text" placeholder="Enter text here"
+                    [(ngModel)]="thePlayer[fields.id]">
+                </div>
+              </div>
+
+              <div class="con">
+                <div class="vertical-center">
+                  <!-- <button type="submit" class="btn btn-primary  float-right save" (click)="SaveCustomFields()">
+                    Save</button> -->
+                  <p *ngIf="showMyMessage" class="ml-5 mt-2">Saved ..</p>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <!-- Create Scenario -->
+        <div type="button" class="btn " data-toggle="modal" data-target=".bd-example-modal-smScenario">Create Scenario
+        </div>
+        <div class="modal fade bd-example-modal-smScenario" tabindex="-1" role="dialog"
+          aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-contentsc">
+
+              <label for="scenario"> <b>Create Scenario </b></label>
+
+              <input type="text" id="scenario" class="form-control mb-3 " [(ngModel)]="scenarioTitle">
+
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveScenario()">Save </button>
+
+            </div>
+          </div>
+        </div>
+
+        <div type="button" class="btn send-to" data-toggle="modal" data-target="#xx">
+          Inbox (2)
+        </div>
+      </div>
+
+      <!-- Summary information  -->
+      <br>
+
+      <ul class="list-arrow" *ngFor="let  summaryDetails  of dealDetails">
+        <li>
+          <h4> <b> {{summaryDetails.title}}</b> </h4>
+        </li>
+        <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Value :</span>
+          {{summaryDetails.value|number}}</li>
+        <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Currency:</span>
+          {{summaryDetails.currency}}</li>
+        <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Creation Date:
+          </span>{{summaryDetails.add_time}}</li>
+        <li> <i class="fas fa-arrow-right m-2 "></i><span style="font-weight: bold;">Update time:</span>
+          {{summaryDetails.update_time}}</li>
+      </ul>
+      
+    </div>
+  </div>
+</div>
+
+<!-- <div>
+    <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">      
+      <div>
+        <input type="file" name="profile" (change)="onFileSelect($event)" />
+      </div>
+      <div>
+        <button type="submit">Upload</button>
+      </div>
+    </form>
+  </div> -->
+
+
+
+<!-- <form  (ngSubmit)="onSubmit()" >
+  <label for="file">Choose File</label>
+  <input type="file" id="file" #f (change)="handleFile($event.target)" multiple> <br>
+  <button class="button" type="submit">Submit</button>
+</form> -->
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Creation Date </th>
+            <th>Create Group</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let sce of scenarios">
+            <tr>
+              <!-- scenario title -->
+              <td (click)="getGroup(sce.id)" style="cursor: pointer;"> <span> <b> {{sce.title}} </b></span> </td>
+              <!-- scenario creationdate -->
+              <td> <b> {{sce.creationDate}} </b> </td>
+              <!-- create group -->
+              <td>
+                <button type="button" class="btn btn-success createGroup" data-toggle="modal"
+                  data-target=".bd-example-modal-smCG" (click)="getScenarioId(sce.id)">Create Group</button>
+
+                <div class="modal fade bd-example-modal-smCG" tabindex="-1" role="dialog"
+                  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-contentCG">
+                      <label> <b>Create Group </b></label>
+                      <input type="text" class="form-control mb-3 " [(ngModel)]="groupTitle">
+
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createGroup()">Save
+                        Group</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="padding: 0; margin:0">
+                <div *ngFor="let g of sce.dealGroups">
+                  <div class="groupDeal">
+                    <div class="grpTitle">
+                      <div style="cursor: pointer; margin-bottom: 25px; margin-top: 20px;">
+                        <div>
+                          <span style="font-size: 17px; font-family: serif;" (click)="getStages(g)">
+                            {{g.title}} </span>
+
+                          <!-- <button (click)="initMemberRequest(g , g.id , sce.id)" class="btn btn-primary addMember ml-3 "
+                            data-toggle="modal" data-target="#addMember">Add Members</button> -->
+                        </div>
+
+                        <!-- start add member -->
+                        <div class="modal fade bd-example-modal-lg" id="addMember" tabindex="-1" role="dialog"
+                          aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog  modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <!-- <h5 class="modal-title" id="exampleModalLabel">Persons</h5> -->
+
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                  <!-- alpha -->
+                                  <div class="upletters mb-3 ml-5">
+                                    <div *ngFor="let letter of letters" style="display: inline;">
+                                      <input (click)="getLetter($event.target)"
+                                       placeholder={{letter}} value={{letter}}
+                                        class="letters mr-1" />
+                                    </div>
+                                  </div>
+                                </h5>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+
+                              <div class="modal-body">
+
+                                <div class="d-flex">
+                                  <!-- search  name-->
+                                  <aside class="search-button ">
+                                    <div class="container">
+                                      <span class="lupa">
+                                        <i class="fa fa-search"></i>
+                                      </span>
+                                      <input [(ngModel)]="termName" type="search" id="search"
+                                        placeholder="Search by name" />
+                                    </div>
+                                  </aside>
+
+                                  <!-- search org -->
+                                  <aside class="search-button ">
+                                    <div class="container">
+                                      <span class="lupa">
+                                        <i class="fa fa-search"></i>
+                                      </span>
+                                      <input [(ngModel)]="termOrg" type="search" id="search"
+                                        placeholder="Search by Org" />
+                                    </div>
+                                  </aside>
+
+                                  <div class="select" >
+                                    <select name="slct" id="slct" (change)="selectOption($event.target)">
+                                      <option selected value="0">All</option>
+                                      <option  *ngFor="let option of options" [value]="option.id">
+                                        {{option.label}}</option>
+                                    </select>
+                                  </div>
+
+                                </div>
+
+                                <div class="col-lg-12 ">
+
+                                  <table class="table table-bordered ">
+
+                                    <thead>
+                                      <ng-container *ngFor="let feild of currentFields" class="heads">
+                                        <th> <b> {{feild.name}} </b> </th>
+                                      </ng-container>
+                                    </thead>
+                                    <tbody>
+
+                                      <ng-container *ngFor="let person of persons 
+                                 | alpha:selectedLetter | search:termName |searchOrg:termOrg |type:selectId">
+                                        <tr>
+                                          <td>
+                               
+                                            <input (change)="check($event)" type="checkbox" id="input{{person.id}}"
+                                              name="personid" class="mr-2 person-name" value="{{person.id}}">
+                                            <label for="input{{person.id}}">{{person.name}} </label>
+                                          </td>
+                                        
+                                          <td>
+                                            <span>{{returnPersonType(person)}} </span>
+                                          </td>
+
+                                          <td>
+                                            <ul>
+                                              <li *ngFor="let email of person.email"> {{email.value}}</li>
+                                            </ul>
+                                          </td>
+
+                                          <td>
+                                            <ul>
+                                              <li *ngFor="let phone of person.phone"> {{phone.value}}</li>
+                                            </ul>
+                                          </td>
+                                          <td>
+                                            {{person.org_name}}
+                                          </td>
+
+                                          <td> {{person.closed_deals_count}} </td>
+                                          <td> {{person.open_deals_count}}</td>
+                                          <td class="notes"> {{person.notes}} </td>
+                                        </tr>
+
+                                      </ng-container>
+
+                                    </tbody>
+
+                                  </table>
+                                  <div class="modal-footer">
+
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <div>
+                                      <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        (click)="send()">
+                                        Add </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <!-- end add mem -->
+                      </div>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card" id="{{g.id}}" style="display: none;">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th *ngFor="let stage of g.stages">
+                              {{stage.title}}  
+                              <i class="fas fa-paper-plane" data-toggle="modal"
+                                data-target=".bd-example-modal-lgSendMailGroup" title="Send Email"
+                                style="color: #10ac84; cursor: pointer;" (click)="openModelGroup(stage.id ,g)"></i>
+                            </th>
+                          </tr>
+                        </thead>
+
+
+                        
+                        <tbody>
+                          <tr *ngFor="let deal of g.deals">
+                            <td *ngFor="let stage of g.stages">
+                              <span class="deal-details" *ngIf="stage.id == deal.stage">
+
+                                <!-- <input (change)="checkMicroDeal($event)"   
+                                type="checkbox" id="{{deal.id}}" 
+                                name="personid" class="mr-2" value="{{deal.id}}">  
+                                 -->
+                                <label for="{{deal.id}}"> {{deal.title}}  {{deal.id}}    </label>
+
+                               
+                                <i class="fas fa-inbox ml-2" (click)="getMails(deal.id)" data-toggle="modal"
+                                  data-target=".bd-example-modal-lgInbox" title="Inbox"
+                                  (click)="getMicroDealid(deal.id)" style="color: #222f3e; cursor: pointer;"></i>
+
+                                <!-- <i class="fas fa-paper-plane ml-2" data-toggle="modal"
+                                  data-target=".bd-example-modal-lgSendMicroDeal" title="Send Email"
+                                  style="color: #10ac84;" (click)="getMicroDealid(deal.id)"></i> -->
+
+                                <i class="fas fa-info info float-right" (click)="getInfo(deal)"
+                                  data-toggle="modal" data-target=".bd-example-modal-smInfo"></i>
+
+                              <br>    <br>    
+                             
+                              <div class="ml-3" > 
+                                 <b> {{deal.latestDate| date }} 
+                                  <span *ngIf="deal.latestDate" style="color: #e74c3c;"
+                                    (click)="getDates(deal)"
+                                    data-toggle="modal" data-target=".bd-example-modal-smDates"> 
+                                       Get Dates ({{deal.dealLength}})</span></b>
+                                   </div>
+
+
+                                <div class="modal fade bd-example-modal-lgInbox" tabindex="-1" role="dialog"
+                                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-lg">
+                                    <div class="modal-content-email">
+                                      <section class="content inbox">
+                                        <div class="container-fluid" *ngFor="let email of uniEmails">
+                                          <div class="row clearfix">
+                                            <div class="col-md-12 col-lg-12 col-xl-12">
+                                              <ul class="mail_list list-group list-unstyled">
+                                                <li class="list-group-item unread">
+                                                  <div class="media" style="cursor: pointer;">
+                                                    <div class="pull-left">
+                                                      <div class="controls">
+                                                        <div class="checkbox">
+                                                          <input type="checkbox" id="basic_checkbox_2">
+                                                          <label for="basic_checkbox_2"></label>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                      <div class="media-heading" (click)="expandRow(email)">
+
+                                                        <span *ngIf="email.direction == 1" 
+                                                        class="mr-2" style="background-color: #2ecc71;
+                                                        color: #fff;
+                                                        padding: 2px 4px;
+                                                        border-radius: 14px;">
+                                                          <i class="fas fa-envelope-square"></i>
+                                                        </span>
+
+                                                        <span *ngIf="email.direction == -1" class="mr-2" style="background-color: #b2bec3;
+                                                    color: #fff;
+                                                    padding: 2px 4px;
+                                                    border-radius: 14px;">
+                                                          <i class="fas fa-chevron-right"></i>
+                                                        </span>
+
+                                                        <span *ngIf="email.direction == 2" class="mr-2" style="background-color: #b2bec3;
+                                                    color: #fff;
+                                                    padding: 2px 4px;
+                                                    border-radius: 14px;">
+                                                          <i class="fas fa-angle-double-right"></i>
+                                                        </span>
+
+
+                                                        <a class="m-r-10"> {{email.fromAddress}}</a>
+                                                        <span class=" ml-2 badge bg-green">Work</span>
+
+                                                        <small class="float-right text-muted"><time
+                                                            class="hidden-sm-down" datetime="2017"> {{email.date | date
+                                                            }} <br> {{email.date | date:'shortTime' }}</time><i
+                                                            class="zmdi zmdi-attachment-alt"></i> </small>
+                                                        <p class="msg">{{email.subject}}</p>
+                                                      </div>
+                                                    </div>
+
+                                                  </div>
+                                                </li>
+
+                                              </ul>
+
+                                            <div *ngIf="email.togglebody" class=" email-body">
+                                             
+                                               <div [innerHTML]="email.previewMailbody" class="mailBody"></div>
+
+                                                  <button class="btn btn-info mt-3 replayMail ml-auto"
+                                                    (click)="letsReply(email)"
+                                                     (click)="email.toggleReply =!email.toggleReply">
+
+                                                    <span>{{email.toggleReply ? 'Close' : 'Reply'}}</span> </button>
+
+
+                                                  <div *ngIf="email.replyIsHere">
+                                                    <div class="mail-container">
+                                                      <div class="modal-body-mail" style="padding:10px;">
+              
+                                                        <form>
+                            
+                                                          <div class="form-group">
+                                                            <label for="recipient-name" class="col-form-label"> <b>
+                                                                Email body /
+                                                                Template body : </b> </label>
+
+                                                            <div *ngIf="showRichBoxMicroDeals">
+                                                         <ejs-richtexteditor  #replyRTE
+                                                          [toolbarSettings]='tools'                                                          
+                                                           [innerHTML]="email.replyMailbody"                                                         
+                                                           name="replyMailbody">
+                                                              </ejs-richtexteditor>
+
+                                                              <ejs-dialog #Dialog id="rteDialog" [buttons]='dlgButtons'
+                                                                (overlayClick)="dialogOverlay()" [header]='header'
+                                                                [visible]='false' [showCloseIcon]='true'
+                                                                [target]='target' (created)="dialogCreate()"
+                                                                [isModal]='true'>
+                                                                <ng-template #content>
+                                                                  <div id="rteSpecial_char">
+                                                                    <h3> <b> Contact Data </b> </h3>
+                                                                    <div>
+
+                                                                      <div class="btn btn-primary m-1 "
+                                                                        title="Firstname"
+                                                                        (click)="insertPersonalization('#Person.contact.firstName#')">
+                                                                        #Person.contact.firstName#</div>
+                                                                      <div class="btn btn-primary m-1" title="Lastname"
+                                                                        (click)="insertPersonalization('#Person.contact.lastName#')">
+                                                                        #Person.contact.lastName#</div>
+                                                                      <div class="btn btn-primary m-1" title="email"
+                                                                        (click)="insertPersonalization('#Person.contact.email#')">
+                                                                        #Person.contact.email#</div>
+                                                                      <div class="btn btn-primary m-1" title="phone"
+                                                                        (click)="insertPersonalization('#Person.contact.phone#')">
+                                                                        #Person.contact.phone#</div>
+
+                                                                    </div>
+                                                                    <br> <br>
+                                                                    <h3> <b> Deal Data </b> </h3>
+                                                                    <div class="btn btn-danger m-1" title="title"
+                                                                      (click)="insertPersonalization('#Deal.data.title#')">
+                                                                      #Deal.data.title#</div>
+
+                                                                    <div style="display: inline-block;"
+                                                                      *ngFor="let fields of anotherCustomFields ;let index = index;">
+                                                                      <div class="btn btn-danger m-1"
+                                                                        title="Parameter.{{fields.fieldLabel}}"
+                                                                        (click)="insertPersonalization('#Parameter.'+fields.fieldLabel+'#')">
+                                                                        #Parameter.{{fields.fieldLabel}}#
+                                                                      </div>
+                                                                    </div>
+
+                                                                  </div>
+                                                                </ng-template>
+                                                              </ejs-dialog>
+                                                            </div>
+                                                          </div>
+                                                        </form>
+             
+
+                                                        <div class="modal-footer">                                                                     
+                                                          <button type="button" class="btn btn-primary"
+                                                            (click)="sendEmailForReplay(email)" data-dismiss="modal">Send
+                                                            Email</button>
+
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                          
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                      </section>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                                        
+
+                                <div class="modal fade bd-example-modal-smInfo" tabindex="-1" role="dialog"
+                                  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-sm">
+                                    <div class="modal-contentInfo">
+                                      <div class="grid-margin ">
+                                        <div class="card">
+                                          <div class="card-body-info">
+                                            <h4 class="card-title">Contact information</h4>
+                                            <ul>
+                                              <li><b>Name :</b> {{deal.contactInfo?.firstName}} {{deal.contactInfo?.lastName}}
+                                              </li>
+                                              <li><b>Email :</b> {{deal.contactInfo?.email}}</li>
+                                              <li><b>Creation date :</b> {{deal.contactInfo?.cdate | date}}</li>
+                                            </ul>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div class="modal fade bd-example-modal-smDates" tabindex="-1" role="dialog"
+                                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                  <div class="modal-contentInfo">
+                                    <div class="grid-margin ">
+                                      <div class="card">
+                                        <div class="card-body-info">
+                                          <h4 class="card-title">Dates</h4>
+                                          <ul>
+                                            <li *ngFor="let date of sortDates">
+                                              <b>Date :</b> {{date.dateTime |date}}
+                                              <b>Time :</b> {{date.dateTime | date:'shortTime'}}
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                </div>
+
+                              </span>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <div id="table-scroll" class="table-scroll">
+  <div class="table-wrap">
+    <table class="main-table" *ngFor="let report of reports">
+      <thead>
+        <tr>
+          <th scope="col" style="width:225px;"> Groups </th>
+          <th scope="col" style="width:25px;"> #Contact </th>
+          <th scope="col" *ngFor="let stagereport of report.stages"> {{stagereport.stagename}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="cursor: pointer; width:225px;">
+            {{report.sequencesName}}
+            <br><br>
+            {{report.cDate}}
+          </td>
+          <td style="width:25px;"> {{report.numberOfContact}} </td>
+
+          <td *ngFor="let stagereport of report.stages" (click)='ExpandMe(stagereport.id)' style="cursor: pointer;">
+            {{stagereport.numberOfDeals}} <i class="fas fa-paper-plane ml-3" data-toggle="modal"
+              data-target=".bd-example-modal-lg2"></i>
+            <br>
+            <div id={{stagereport.id}} style="display: none;">
+              <div *ngFor="let deal of stagereport.deals" style="cursor: pointer;">
+                {{deal.title}}
+                <i class="fas fa-envelope-open-text mr-2" style="cursor: pointer;" (click)="getMails(deal.id)"
+                  data-toggle="modal" data-target=".bd-example-modal-lg4"></i>
+
+                <div class="modal fade bd-example-modal-lg4" tabindex="-1" role="dialog"
+                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                      <section class="content inbox">
+                        <div class="container-fluid">
+                          <div class="row clearfix">
+                            <div class="col-md-12 col-lg-12 col-xl-12">
+                              <ul class="mail_list list-group list-unstyled" *ngFor="let email of uniEmails">
+
+                                <li class="list-group-item unread">
+                                  <div class="media" style="cursor: pointer;">
+                                    <div class="pull-left">
+                                      <div class="controls">
+                                        <div class="checkbox">
+                                          <input type="checkbox" id="basic_checkbox_2">
+                                          <label for="basic_checkbox_2"></label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="media-body">
+                                      <div class="media-heading">
+                                        <a class="m-r-10">{{email.fromAddress}}</a>
+                                        <span class=" ml-2 badge bg-green">Work</span>
+
+                                        <small class="float-right text-muted"><time class="hidden-sm-down"
+                                            datetime="2017">{{email.date}}</time><i
+                                            class="zmdi zmdi-attachment-alt"></i> </small>
+                                      </div>
+                                      <p class="msg" (click)="expandRow(email.id)">{{email.subject}}</p>
+                                    </div>
+                                    <div *ngIf="mailBody">
+                                      <span *ngIf="mailBody.id == email.id" [innerHTML]="mailBody.body"
+                                        class="m-5"></span>
+                                    </div>
+                                  </div>
+                                </li>
+
+                              </ul>
+
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+
+                    </div>
+                  </div>
+                </div>
+
+                <i class="fas fa-paper-plane" data-toggle="modal" data-target=".bd-example-modal-lg2"></i>
+                <ng-template #RTB>
+                  <ejs-richtexteditor id='customRTE' #customRTE [toolbarSettings]='tools' (created)='onCreate()'
+                    [(ngModel)]='contentDOC' [(value)]='contentDOC' name="contentDOC">
+                  </ejs-richtexteditor>
+
+                  <ejs-dialog #Dialog id="rteDialog" [buttons]='dlgButtons' (overlayClick)="dialogOverlay()"
+                    [header]='header' [visible]='false' [showCloseIcon]='true' [target]='target'
+                    (created)="dialogCreate()" [isModal]='true'>
+                    <ng-template #content>
+                      <div id="rteSpecial_char">
+                        <h3> <b> Contact Data </b> </h3>
+                        <div>
+                          <div class="btn btn-primary m-1" title="org_name"
+                            (click)="insertPersonalization('#org_name#')">#org_name#</div>
+                          <div class="btn btn-primary m-1 " title="Firstname"
+                            (click)="insertPersonalization('#Firstname#')">#Firstname#</div>
+                          <div class="btn btn-primary m-1" title="Lastname"
+                            (click)="insertPersonalization('#Lastname#')">#Lastname#</div>
+                          <div class="btn btn-primary m-1" title="email" (click)="insertPersonalization('#email#')">
+                            #email#</div>
+                          <div class="btn btn-primary m-1" title="phone" (click)="insertPersonalization('#phone#')">
+                            #phone#</div>
+                          <div class="btn btn-primary m-1" title="job_title"
+                            (click)="insertPersonalization('#job_title#')">#job_title#</div>
+                        </div>
+                        <br> <br>
+                        <h3> <b> Deal Data </b> </h3>
+                        <div class="btn btn-danger m-1" title="title" (click)="insertPersonalization('#title#')">#Title#
+                        </div>
+                        <div class="btn btn-danger m-1" title="formatted_weighted_value"
+                          (click)="insertPersonalization('#formatted_weighted_value#')">#formatted_weighted_value#</div>
+                        <div class="btn btn-danger m-1" title="currency " (click)="insertPersonalization('#currency#')">
+                          #currency#</div>
+                        <div style="display: inline-block;"
+                          *ngFor="let fields of anotherCustomFields ;let index = index;">
+                          <div class="btn btn-danger m-1" title="{{fields.fieldLabel}}"
+                            (click)="insertPersonalization('#'+fields.fieldLabel+'#')">#{{fields.fieldLabel}}#</div>
+                        </div>
+
+                      </div>
+                    </ng-template>
+                  </ejs-dialog>
+                </ng-template>
+                <div class="modal fade bd-example-modal-lg2" tabindex="-1" role="dialog"
+                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-body" style="padding:10px;">
+                        <p class="ml-5"><b>Select Template To Edit:</b></p>
+                        <div class="select ml-5">
+                          <select name="slctTemp" id="slct" (change)="selectTemp($event.target)">
+                            <option></option>
+                            <option selected *ngFor="let temp of templatesName" [value]="temp"> {{temp}}</option>
+                          </select>
+                        </div>
+                        <form>
+                          <div class="form-group">
+                            <label for="recipient-name" class="col-form-label"> <b> Email subject / Template name
+                                :</b></label>
+                            <input type="text" class="form-control" [(ngModel)]="tempName" name="something"
+                              (keyup)="getTemplateName($event.target)">
+                          </div>
+                          <div class="form-group">
+                            <label for="recipient-name" class="col-form-label"> <b> Email body / Template body : </b>
+                            </label>
+                            <ng-container *ngTemplateOutlet="RTB">
+
+                            </ng-container>
+                          </div>
+                        </form>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveTemp()">Save
+                          Template</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Send Email</button>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <br>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+
+<!-- old table  -->
+
+<!-- <div class="row">
+  <div class="col-lg-8">
+  <div class="card">
+    <div class="card-body">
+      
+      <table class="table table-bordered" *ngFor="let report of reports" >
+        <thead>
+          <tr>   
+            <th> Sequences </th>
+            <th> Date </th>
+            <th> #Contact  </th>
+            <th *ngFor="let stagereport of report.stages" >{{stagereport.stagename}}</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td (click)="getStages(report.id)"  style="cursor: pointer;" > {{report.sequencesName}}</td>
+            <td>{{report.cDate}}</td>
+            <td> {{report.numberOfContact}} </td>
+            <td *ngFor="let stagereport of report.stages"  >
+              {{stagereport.numberOfDeals}} <br>
+               {{stagereport.deals }}  
+                </td>  
+          </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div> -->
+
+<!-- fields -->
+<!-- <div class="card-header d-block d-md-flex">
+  <h5 class="mb-0">Fields</h5>
+</div>
+
+<div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
+  <div class="col-sm-6 col-md-4 p-2  btn-wrapper" *ngFor="let fields of anotherCustomFields ;let index = index;">
+
+    <div class="fieldInputs" (click)="fieldBtnHandler(index)">
+      <i class="fas fa-stream"></i> {{fields.fieldLabel}} 
+    </div>
+   
+    <br>
+
+    <input class="field-input mt-3" name="inputName" type="text" placeholder="Enter text here"
+      [(ngModel)]="thePlayer[fields.id]">
+    </div>
+</div>
+
+<div class="con">
+  <div class="vertical-center">
+    <button type="submit" class="btn btn-primary  float-right save" (click)="SaveCustomFields()"> Save</button>
+    <p *ngIf="showMyMessage" class="ml-5 mt-2">Saved ..</p>
+  </div>
+
+</div> -->
+
+
+<!-- the old table -->
+<!-- <div class="col-lg-6 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Creation Date </th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let dealG of dealGroups">
+          <tr>
+            <td (click)="getStages(dealG.id)" style="cursor: pointer;">{{dealG.title}} </td>
+            <td>{{dealG.cdate}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="col-md-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+
+        <div class="col-md-12">
+          <div class="d-sm-flex align-items-baseline report-summary-header">
+            <h5 class="font-weight-semibold">Stages</h5> <span class="ml-auto">Updated Report</span> <button
+              class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="row report-inner-cards-wrapper report-inner-card">
+
+        <div class=" col-md-6 col-xl report-inner-card" style="display: block;" *ngFor="let stage of stages">
+          <div class="inner-card-text">
+            <span class="report-title mb-3">{{stage.title}} {{stage.id}} </span>
+          </div>
+
+          <div *ngFor="let deal of deals" class="deals">
+            <span class="deal-details" *ngIf="stage.id == deal.stage"  (click)="toggleContent()"  >
+              {{deal.title}} </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- template -->
+<!-- <div>  
+  <p class="ml-5"><b> Select Template : </b></p>
+<div class="select ml-5" (change)="selectTemp($event.target)"> 
+    
+  <select name="slct" id="slct">
+    <option selected *ngFor="let temp of templatesName" [value]="temp"> {{temp}}</option>
+  </select>
+</div>
+
+<div class="modal-body">
+  <form>
+  <div class="form-group">
+    <label for="recipient-name" class="col-form-label">  <b> Email subject / Template name :</b></label>            
+    <input type="text" class="form-control" [(ngModel)]="tempName" name="something"
+     (keyup)="getTemplateName($event.target)">
+  </div>
+  
+  <div class="form-group">
+    <label for="recipient-name" class="col-form-label"> <b> Email body / Template body : </b> </label> 
+   
+   
+
+    <ejs-richtexteditor id='customRTE' #customRTE [toolbarSettings]='tools' (created)='onCreate()' 
+      [(ngModel)]='contentDOC' [(value)]='contentDOC'  name="contentDOC" >
+    </ejs-richtexteditor>
+
+    <ejs-dialog #Dialog id="rteDialog" [buttons]='dlgButtons' (overlayClick)="dialogOverlay()" [header]='header' [visible]='false'
+        [showCloseIcon]='true' [target]='target' (created)="dialogCreate()" [isModal]='true'>
+        <ng-template #content>
+            <div id="rteSpecial_char">
+              <h3> <b> Contact Data </b> </h3>
+                <div>
+                <div class="btn btn-primary m-1"    title="org_name" (click)="insertPersonalization('#org_name#')">#org_name#</div>              
+                <div  class="btn btn-primary m-1 "  title="Firstname" (click)="insertPersonalization('#Firstname#')">#Firstname#</div>              
+                <div  class="btn btn-primary m-1"   title="Lastname" (click)="insertPersonalization('#Lastname#')">#Lastname#</div>              
+                <div  class="btn btn-primary m-1"   title="email" (click)="insertPersonalization('#email#')">#email#</div>              
+                <div  class="btn btn-primary m-1"  title="phone" (click)="insertPersonalization('#phone#')">#phone#</div>   
+                <div  class="btn btn-primary m-1"  title="job_title" (click)="insertPersonalization('#job_title#')">#job_title#</div>              
+              </div>
+                
+                <br> <br>
+                
+                <h3> <b> Deal Data </b> </h3>
+
+                <div class="btn btn-danger m-1" title="title" (click)="insertPersonalization('#title#')">#Title#</div>              
+                <div class="btn btn-danger m-1"  title="formatted_weighted_value" (click)="insertPersonalization('#formatted_weighted_value#')">#formatted_weighted_value#</div>              
+                <div class="btn btn-danger m-1"  title="currency " (click)="insertPersonalization('#currency#')">#currency#</div>       
+                <div style="display: inline-block;" *ngFor="let fields of anotherCustomFields ;let index = index;">
+                <div  class="btn btn-danger m-1" title="{{fields.fieldLabel}}" (click)="insertPersonalization('#'+fields.fieldLabel+'#')">#{{fields.fieldLabel}}#</div>              
+                </div>
+
+            </div>
+        </ng-template>
+    </ejs-dialog>
+  </div>
+</form>  
+
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="saveTemp()">Save Template</button>
+<button type="button" class="btn btn-primary"  data-dismiss="modal" >Send Email</button>
+
+</div>
+ </div>  -->
+
+
+<!-- old richtextbox with compose button -->
+<!-- <button type="button" class="btn btn-primary" 
+data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo">
+  Compose </button>   -->
+
+<!-- <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-contents">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label"> Name:</label>            
+            <input type="text" class="form-control" [(ngModel)]="tempName" name="something"
+             (keyup)="getTemplateName($event.target)">
+
+          </div>
+          <div class="form-group">
+            <ejs-richtexteditor #toolsRTE  id='defaultRTE' [toolbarSettings]='tools'>
+              <ng-template #valueTemplate>
+                <p>The Rich Text Editor </p>
+              </ng-template>
+              </ejs-richtexteditor>
+
+          </div>
+        </form>  
+   
+
+  
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="uploadTemp()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>  -->
+
+
+<!-- New inbox  -->
+<!-- <div *ngIf="hideContent">
+  <div class="mail-box">
+    <div class="card-header d-block d-md-flex">
+      <h5 class="mb-0">Inbox</h5>
+    </div>
+  </div>
+
+  <section class="content inbox">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+          <ul class="mail_list list-group list-unstyled" *ngFor="let email of emails">
+
+            <li class="list-group-item unread">
+              <div class="media" style="cursor: pointer;">
+                <div class="pull-left">
+                  <div class="controls">
+                    <div class="checkbox">
+                      <input type="checkbox" id="basic_checkbox_2">
+                      <label for="basic_checkbox_2"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">
+                    <a class="m-r-10">{{email.fromAddress}}</a>
+                    <span class=" ml-2 badge bg-green">Work</span>
+
+                    <small class="float-right text-muted"><time class="hidden-sm-down"
+                        datetime="2017">{{email.date}}</time><i class="zmdi zmdi-attachment-alt"></i> </small>
+                  </div>
+                  <p class="msg" (click)="expandRow(email.id)">{{email.subject}}</p>
+                </div>
+                <div *ngIf="mailBody">
+                  <span *ngIf="mailBody.id == email.id" [innerHTML]="mailBody.body" class="m-5"></span>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div> -->
+
+  ​
+  <!-- <div style="max-width:41%;">
+  ​
+    <div style="width: 100%; ">
+  ​
+      <div style=" min-height: 1px;padding: 1.25rem;">
+        <img style="width: 500px; height: 80px;" src="http://40.76.123.27:8094/images/home.png" class="e-rte-image e-imginline">
+  ​
+        <div style="background-color: black; color: #fff !important; font-size: 15px;
+        margin: 20px; padding: 17px 35px; border-radius: 20px; text-align: center;">
+          <h4 style="color: #fff; ">EXECUTIVE LOAN SUMMARY </h4>
+          <h6 style="font-size: 20px;">#Deal.data.title#</h6>
+        </div>
+  ​
+        <div style="margin: 5px 10px; ">
+          <h6 style="background-color: black; border-radius: 20px; text-align: center; ;color: #fff !important;font-size: 15px;  padding: 4px;">OPPORTUNITY</h6>
+          <p style="padding: 10px; font-weight: bold;">Our company (Valor GLV) is under a fully executed agreement to
+             purchase the ground leased fee under #Parameter.DealStreetAddress#,#Parameter.DealCityState# and lease back 
+             (99 year lease) to #Parameter.Organization#. Further, we have been exclusivelyengaged by #Parameter.Organization# 
+             (the building owner) to procure a #Parameter.LeaseholdLTV# Loan-to-Value (LTV),
+            $#Parameter.LeaseholdLTC# ,Debt-Yield and DSCR of #Parameter.LeaseholdDSCR#. 
+            Upon review the Lender will find a project with strong financials and excellent sponsorship.</p>
+        </div>
+        <div style="margin: 5px 10px; ">
+          <h6 style="background-color: black; border-radius: 20px; text-align: center; color: #fff !important; font-size: 15px;  padding: 4px;">STRUCTURE ADVANTAGES TO SPONSOR</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            1. Improved Cash Flow <br>
+            2. Improved Debt Service Coverage Ratio (DSCR) <br>
+            3. Reduced Refi Risk<br>
+            4. Tax Advantages - Improved Depreciation ground rent as an <br>expense <br>
+            5. Estate Planning
+          </p>
+        </div>
+        <div style="margin: 5px 10px; ">
+          <h6 style="background-color: black; border-radius: 20px;
+           color: #fff !important; text-align: center; font-size: 15px;  padding: 4px;">PROJECT PROFILE </h6>
+          <p style="padding: 10px; font-weight: bold;;"><b>Address: #Parameter.DealStreetAddress#,<br>#Parameter.DealCityState#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">NOI after Ground Rent:<br>$#Parameter.LeaseholdNOIAfterGroundLeasePayment#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Building Sq Ft: #Parameter.BuildingSquareFootage#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Lot Size: #Parameter.LotSize#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Number of Stories: #Parameter.NumberofStories#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Year Built: #Parameter.YearBuilt#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Year Renovated: #Parameter.YearRenovated#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Occupancy: #Parameter.Occupancy#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Construction Component: #Parameter.ConstructionComponent#<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">Property Description:<br></b><b style="font-size: 0.9375rem; font-family: Roboto, Segoe UI, GeezaPro, DejaVu Serif, sans-serif, -apple-system, BlinkMacSystemFont;">#Parameter.PropertyDescription#</b></p></div><div style="margin: 5px 10px; text-align: center;">
+          </div> 
+          <div style="margin: 5px 10px; ">
+          <h6 style="background-color: black; border-radius: 20px; color: #fff !important; font-size: 15px;  padding: 4px; text-align: center;">CONTACT INFORMATION</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            Joe Bous, Principal <br>
+            Valor GLV (703) 338-8555  <br>
+            4619 41st St  joe@groundlease.com  <br>
+            Washington DC 20016</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  ​
+  <div style="max-width: 41%;">
+    <div style="width: 100%;">
+      <div style="min-height: 1px;padding: 1.25rem;">
+        <div style="margin: 0px 10px 5px 10px;
+        ">
+          <h6 style="background-color: black; text-align: center; border-radius: 20px; color: #fff !important; font-size: 15px;  padding: 4px;">FINANCING REQUEST SUMMARY</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            Loan Request: $#Parameter.LeaseholdDebtProceedsRequest# <br>
+            Loan Term: No Preference <br>
+            Amortization: IO Period Requested / Not Required <br>
+            Recourse: Open to Personal Guarantee
+          </p>
+        </div>
+  ​
+        <div style="margin: 5px 10px;  ">
+          <h6 style="background-color: black; text-align: center; border-radius: 20px; color: #fff !important;
+          margin: auto; font-size: 15px;  padding: 4px;">VALUATION ASSUMPTIONS</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            NOI after Ground Rent: <br>$#Parameter.LeaseholdNOIAfterGroundLeasePayment# <br>
+            Cap Rate: #Parameter.LeaseholdEstimatedCapRate# % <br>
+            Value: $#Parameter.EstimatedLeaseholdValue# <br>
+            LTV: #Parameter.LeaseholdLTV#% <br>
+          </p>
+        </div>
+  ​
+        <div style="margin: 5px 10px;  ">
+          <h6 style="background-color: black;  text-align: center; border-radius: 20px; color: #fff !important;
+          margin: auto; font-size: 15px;  padding: 4px;">CASH FLOW ASSUMPTIONS</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            NOI before Ground Rent: $#Parameter.FeeSimpleNOI#<br>
+            Ground Rent: $#Parameter.GroundRent#<br>
+            Interest Rate: #Parameter.LeaseholdInterestRate#%<br>
+            Loan Am (yrs): #Parameter.LeaseholdTermsYrs#<br>
+            DSCR: #Parameter.LeaseholdDSCR#<br>
+            Leasehold Debt Yield:#Parameter.LeaseholdDebtYield#%<br>
+            Cash Flow (I/O): $622,500 <br>
+            Cash Flow (AMORTIZING): <br>$#Parameter.LeaseholdAmortizingCashFlow#
+          </p>
+        </div>
+  ​
+        <div style="margin: 5px 10px;  ">
+          <h6 style="background-color: black; text-align: center; border-radius: 20px; color: #fff !important;
+          margin: auto; font-size: 15px;  padding: 4px;">GROUND LEASE SUMMARY</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+            The Sponsor has negotiated a favorable 99-year ground
+            lease with Valor GLV and secured $#Parameter.GroundLeaseRequestedProceeds# in land sale
+            proceeds.The initial annual ground rent payment is $#Parameter.GroundRent# The annual ground rent will increase each year
+            by #Parameter.GroundRentIncreasesPercentage# with a one-time max increase every ten years
+            based on CPI growth beginning in year #Parameter.CPIResetAnniversaryYear#.</p>
+        </div>
+  ​
+        <div style="margin: 5px 10px;  ">
+          <h6 style="background-color: black; border-radius: 20px; text-align: center; color: #fff !important;
+                     margin: auto; font-size: 15px;  padding: 4px;">SPONSOR PROFILE</h6>
+          <p style="padding: 10px;  font-weight: bold;">
+      <b>Sponsor: #Parameter.Organization#<br></b>
+      <b>Liquidity: $#Parameter.SponsorLiquidity#<br></b>
+      <b>Net Worth:$#Parameter.SponsorNetWorth#<br></b>
+      <b>Real Estate Owned: #Parameter.SponsorREOwned#<br></b>
+      <b>Sponsor Experience: #Parameter.SponsorExperience#<br></b>
+      <b>#Parameter.SponsorStory#</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  
+  <div style="max-width: 35%; margin: 0 30px;"> 
+    <p style="padding: 10px; text-align: justify;">The information contained herein is strictly intended for reference purposes
+      only and should not be relied upon by any party.Each party should independently conduct due diligence to verify all information contained herein.
+  In no event shall Valor GLV have any liability to any party as Valor GLV expressly waives all responsibility for reliability of the information contained herein.</p>  
+  </div> -->

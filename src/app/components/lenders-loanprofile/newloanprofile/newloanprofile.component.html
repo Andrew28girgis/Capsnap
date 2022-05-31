@@ -1,0 +1,229 @@
+<div class="container-scroller">
+  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1"
+      style="background-color: #1269db!important;color: #fff;">
+      <a href="" class="logo-link">
+        <h3 class="logo-capsource"
+          style=" width: 237px;height: 62px;align-items: center;  display: flex;justify-content: center;">
+          <span class="capSource">Lenders Management</span>
+        </h3>
+      </a>
+      <!-- <ul class="navbar-nav navbar-nav-right ml-auto">
+        <i class="fas fa-arrow-left navbar-icons" [routerLink]="['/lenders']"></i>
+      </ul> -->
+      <button class="navbar-togglernavbar-toggler-right d-lg-none align-self-center" type="button"
+        data-toggle="offcanvas"> <span class="icon-menu"></span></button>
+    </div>
+  </nav>
+</div>
+
+<div class="row" style=" margin-top:65px;background-color: #f9fbfd;">
+  <nav aria-label="breadcrumb" style="margin-left: 16px;">
+    <ol class="breadcrumb" style="font-size: 21px;font-weight: 300;margin-bottom: 0;">
+      <li class="breadcrumb-item"><a [routerLink]="['/lenders']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/lenders', organiztionId]">{{General.Organization?.name}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page"> {{edit? 'Edit':'New'}} Loan Profile</li>
+    </ol>
+  </nav>
+
+  <div class="col-md-12">
+    <div class="card">
+      <!-- <div class="card-header">
+        <div class="card-title">Form Elements</div>
+      </div> -->
+      <div class="card-body">
+        <form (ngSubmit)="f.form.valid && onSubmit() " #f="ngForm">
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group">
+                <label for="ProgramName">Program Name</label>
+                <input type="text" class="form-control"  id="ProgramName" name="ProgramName" placeholder="Program Name"
+                  [(ngModel)]="newLoanProfile.programName" #programName="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && programName.invalid  }" required>
+                <!-- <small  name="emailHelp2" name="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+              </div>
+
+              <div class="form-group">
+                <label for="TargetStates ">Target States</label>
+                <input type="text" class="form-control"  id="TargetStates" name="TargetStates" placeholder="Target States"
+                  [(ngModel)]="newLoanProfile.targetStates" #targetStates="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="investor">Investor</label>
+                <input type="text" class="form-control"  id="investor" name="investor" placeholder="investor"
+                  [(ngModel)]="newLoanProfile.investor" #investor="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="tenancy">Tenancy</label>
+                <input type="text" class="form-control"  id="tenancy" name="tenancy" placeholder="tenancy"
+                  [(ngModel)]="newLoanProfile.tenancy" #tenancy="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="ownerOccupier">Owner Occupier</label>
+                <input type="text" class="form-control"  id="ownerOccupier" name="ownerOccupier" placeholder="Owner Occupier"
+                  [(ngModel)]="newLoanProfile.ownerOccupier" #ownerOccupier="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="targetCountries">Target Countries</label>
+                <input type="text" class="form-control"  id="targetCountries" name="targetCountries" placeholder="TargetCountries"
+                  [(ngModel)]="newLoanProfile.targetCountries" #targetCountries="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="sponsorStates">Sponsor States</label>
+                <input type="text" class="form-control"  id="sponsorStates" name="sponsorStates" placeholder="Sponsor States"
+                  [(ngModel)]="newLoanProfile.sponsorStates" #sponsorStates="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="recourse">Recourse</label>
+                <input type="text" class="form-control"  id="recourse" name="recourse" placeholder="Recourse"
+                  [(ngModel)]="newLoanProfile.recourse" #recourse="ngModel">
+              </div>
+
+
+              <div class="form-group">
+                <label for="leasedFee">leasedFee</label>
+                <input type="number" class="form-control"  id="leasedFee" name="leasedFee" placeholder="leasedFee"
+                  [(ngModel)]="newLoanProfile.leasedFee" #leasedFee="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea class="form-control"  id="notes" rows="5" name="notes" rows="5" [(ngModel)]="newLoanProfile.notes"
+                  #notes="ngModel">
+              </textarea>
+              </div>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group">
+                <label for="minimumLoanSize">Minimum Loan Size</label>
+                <input type="number" class="form-control"  id="minimumLoanSize" name="minimumLoanSize" placeholder="Minimum Loan Size"
+                  [(ngModel)]="newLoanProfile.minimumLoanSize" #minimumLoanSize="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="maximumLoanSize">Maximum Loan Size</label>
+                <input type="number" class="form-control"  id="maximumLoanSize" name="maximumLoanSize" placeholder="Maximum Loan Size"
+                  [(ngModel)]="newLoanProfile.maximumLoanSize" #maximumLoanSize="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="maxLtv">Max Ltv</label>
+                <input type="number" class="form-control"  id="maxLtv" name="maxLtv" placeholder="Max Ltv"
+                  [(ngModel)]="newLoanProfile.maxLtv" #maxLtv="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="maxLtc">Max Ltc</label>
+                <input type="number" class="form-control"  id="maxLtc" name="maxLtc" placeholder="Max Ltc"
+                  [(ngModel)]="newLoanProfile.maxLtc" #maxLtc="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="asStabilizedLtv">As Stabilized Ltv</label>
+                <input type="number" class="form-control"  id="asStabilizedLtv" name="asStabilizedLtv" placeholder="As Stabilized Ltv"
+                  [(ngModel)]="newLoanProfile.asStabilizedLtv" #asStabilizedLtv="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="mindscr">Mind Scr</label>
+                <input type="number" class="form-control"  id="mindscr" name="mindscr" placeholder="Mind Scr"
+                  [(ngModel)]="newLoanProfile.mindscr" #mindscr="ngModel">
+              </div>
+
+
+              <div class="form-group">
+                <label for="loanProgramType">Loan Program Type</label>
+                <input type="number" class="form-control"  id="loanProgramType" name="loanProgramType" placeholder="Loan Program Type"
+                  [(ngModel)]="newLoanProfile.loanProgramType" #loanProgramType="ngModel">
+              </div>
+
+
+              <div class="form-group">
+                <label for="lenderPays">Lender Pays</label>
+                <input type="number" class="form-control"  id="lenderPays" name="lenderPays" placeholder="Lender Pays"
+                  [(ngModel)]="newLoanProfile.lenderPays" #lenderPays="ngModel">
+              </div>
+
+
+              <div class="form-group">
+                <label for="lenderFee">Lender Fee</label>
+                <input type="number" class="form-control"  id="lenderFee" name="lenderFee" placeholder="lenderFee"
+                  [(ngModel)]="newLoanProfile.lenderFee" #lenderFee="ngModel">
+              </div>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group">
+                <label for="requiredFiles">Required Files</label>
+                <input type="text" class="form-control"  id="requiredFiles" name="requiredFiles" placeholder="Required Files"
+                [(ngModel)]="newLoanProfile.requiredFiles" #requiredFiles="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="rateIndex">Rate Index</label>
+                <input type="text" class="form-control"  id="rateIndex" name="rateIndex" placeholder="Rate Index"
+                [(ngModel)]="newLoanProfile.rateIndex" #rateIndex="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="minimumSpread">Minimum Spread</label>
+                <input type="number" class="form-control"  id="minimumSpread" name="minimumSpread" placeholder="Minimum Spread"
+                [(ngModel)]="newLoanProfile.minimumSpread" #minimumSpread="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="maximumSpread">Maximum Spread</label>
+                <input type="number" class="form-control"  id="maximumSpread" name="maximumSpread" placeholder="Maximum Spread"
+                [(ngModel)]="newLoanProfile.maximumSpread" #maximumSpread="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="typicalAmortization">Typical Amortization</label>
+                <input type="text" class="form-control"  id="typicalAmortization" name="typicalAmortization" placeholder="Typical Amortization"
+                [(ngModel)]="newLoanProfile.typicalAmortization" #typicalAmortization="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="prepaymentPenalty">Prepayment Penalty</label>
+                <input type="text" class="form-control"  id="prepaymentPenalty" name="prepaymentPenalty" placeholder="Prepayment Penalty"
+                [(ngModel)]="newLoanProfile.prepaymentPenalty" #prepaymentPenalty="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="lastUpdatedBy">last Updated By</label>
+                <input type="text" class="form-control"  id="lastUpdatedBy" name="lastUpdatedBy" placeholder="last Updated By"
+                [(ngModel)]="newLoanProfile.lastUpdatedBy" #lastUpdatedBy="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="TargetCounties">Target Counties</label>
+                <input type="text" class="form-control"  id="TargetCounties" name="TargetCounties" placeholder="TargetCounties"
+                [(ngModel)]="newLoanProfile.targetCounties" #targetCounties="ngModel">
+              </div>
+
+              <div class="form-group">
+                <label for="contractStatus">Contract Status</label>
+                <input type="text" class="form-control"  id="contractStatus" name="contractStatus" placeholder="Contract Status"
+                [(ngModel)]="newLoanProfile.contractStatus" #contractStatus="ngModel">
+              </div>
+
+            </div>
+          </div>
+          <div class="card-action" style="display: flex; justify-content:center;padding: 15px;">
+            <button class="btn btn-success" style="padding: 14px 30px;">Submit</button>
+            <!-- <button class="btn btn-danger">Cancel</button> -->
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
