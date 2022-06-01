@@ -11,7 +11,7 @@ import { LoanProfile, Organizations } from 'src/app/models/lenders';
 export class LendersLoanprofileComponent implements OnInit {
   JSON:JSON;
   constructor(public activatedRoute: ActivatedRoute,private LendersService: LendersService) { 
-    this.JSON =JSON;
+    this.JSON =JSON
   }
 
   @Input() General:any;
