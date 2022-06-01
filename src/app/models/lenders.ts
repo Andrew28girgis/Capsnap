@@ -18,12 +18,13 @@ export class Organizations {
   isActive: boolean;
   lenderType: string;
   linkedIn: string;
-  loanProfiles: LoanProfile[];
   name: string;
-  organizationProjectTypes: OrganizationProjectType[];
   phoneNumber: string;
   states: string;
   url: string;
+  organizationProjectTypes: OrganizationProjectType[];
+  loanProfiles: LoanProfile[];
+  contacts:Contact[];
 }
 
 export class OrganizationProjectType{
@@ -44,10 +45,10 @@ export class LoanProfile{
   programName :string;
   notes:string;
   targetStates:string;
-  investor:string;
-  tenancy:string;
-  ownerOccupier:string;
   targetCountries:  string;
+  investor:string;
+  ownerOccupier:string;
+  tenancy:string;
   sponsorStates: string;
   international: boolean;
   recourse:string ;
@@ -73,4 +74,14 @@ export class LoanProfile{
   lastUpdated :Date;
   lastUpdatedBy :string;
   targetCounties :string;
+}
+
+
+export class Contact{
+  id:number;
+  firstName:string;
+  lastName:string;
+  cellPhone:string;
+  email:string;
+  linkedIn:string;
 }

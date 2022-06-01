@@ -1,67 +1,376 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-
-<section class="card" *ngIf="!isLoading">
-    <div class="card-header">
-        {{loanProfile.programName}} - {{loanProfile.loanProgramType}} <span class="float-right"> <input type="checkbox" name="international"  id="international" [checked]="loanProfile.international"/> international</span>
+<div class="container-scroller">
+  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1"
+      style="background-color: #1269db!important;color: #fff;">
+      <a href="" class="logo-link">
+        <h3 class="logo-capsource"
+          style=" width: 237px;height: 62px;align-items: center;  display: flex;justify-content: center;">
+          <span class="capSource">Lenders Management</span>
+        </h3>
+      </a>
     </div>
-    <div class="card-body bg-transparent">
-        <div class="row bg-transparent">
-            <div class="col bg-transparent">
-                <div class="card-body m-2 bg-white ">
-                    <h3>Organization</h3>
-                    <span>{{general.Organization.name}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Investor</h3>
-                    <span>{{loanProfile.investor}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Owner Occupier</h3>
-                    <span>{{loanProfile.ownerOccupier}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Notes</h3>
-                    <span>{{loanProfile.notes}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Target Counties</h3>
-                    <span>{{loanProfile.targetCounties}}</span>
-                    <hr>
-                    <h3>Target States</h3>
-                    <span>{{loanProfile.targetStates}}</span>
-                </div>
+  </nav>
+</div>
 
-            </div>
-            <div class="col">
-                <div class="card-body m-2 bg-white">
-                    <h3>Tenancy</h3>
-                    <span>{{loanProfile.tenancy}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Recourse</h3>
-                    <span>{{loanProfile.recourse}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Leased Fee</h3>
-                    <span>{{loanProfile.leasedFee}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Minimum Loan Size</h3>
-                    <span>{{loanProfile.minimumLoanSize}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>As Stabilized Ltv</h3>
-                    <span>{{loanProfile.asStabilizedLtv}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Max LTV</h3>
-                    <span>{{loanProfile.maxLtv}}</span>
-                </div>
-                <div class="card-body m-2 bg-white">
-                    <h3>Max LTC</h3>
-                    <span>{{loanProfile.maxLtc}}</span>
-                </div>
-            </div>
+<div class="row" style=" margin-top:65px;background-color: #f9f9f9;">
+
+  <div class="col-md-12">
+    <div class="card">
+      <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.125); ">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb"
+            style="font-size: 21px;font-weight: 500;margin-bottom: 0; border-bottom: 1px solid #e6e6e6;">
+            <li class="breadcrumb-item"><a [routerLink]="['/lenders']">Home</a></li>
+            <li class="breadcrumb-item"><a
+                [routerLink]="['/lenders', general.Organization.id]">{{general.Organization?.name}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{loanProfile.programName}}</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row " style="background-color:#f4f8fb ;padding: 20px;">
+  <div class="col-12 col-sm-6 col-md-3 mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Target States</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.targetStates}}</h3>
         </div>
+
+      </div>
     </div>
-</section>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3 mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Target Countries</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.targetCountries}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3 mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Investor</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.investor}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3 mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Owner Occupier</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.ownerOccupier}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Tenancy</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.tenancy}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Sponsor States</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.sponsorStates}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Recourse</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.recourse}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>leasedFee</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.leasedFee}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Minimum Loan Size</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.minimumLoanSize}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Maximum Loan Size</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.maximumLoanSize}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Max Ltve</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.maxLtv}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Max Ltc</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.maxLtc}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>As Stabilized Ltv</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.asStabilizedLtv}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Mind Scr</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.mindscr}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Loan Program Type</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.loanProgramType}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Lender Pays</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.lenderPays}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Lender Fee</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.lenderFee}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Contract Status</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.contractStatus}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Required Files</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.requiredFiles}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Rate Index</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.rateIndex}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Minimum Spread</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.minimumSpread}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Maximum Spread</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.maximumSpread}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Typical Amortization</b></h5>
+          </div>
+          <h3 class="text-danger fw-bold">{{loanProfile.typicalAmortization}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Prepayment Penalty</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold">{{loanProfile.prepaymentPenalty}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Last Updated By</b></h5>
+          </div>
+          <h3 class="text-info fw-bold">{{loanProfile.lastUpdatedBy}}</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5><b>Target Counties</b></h5>
+          </div>
+          <h3 class="text-success fw-bold">{{loanProfile.targetCounties}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-6  mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 style="margin-top: 3px;"><b>Notes</b></h5>
+          </div>
+          <h3 class="text-muted fw-bold" style="font-size: 15px;
+          margin-left: 15px;color: rgb(85, 84, 84) !important;text-align: center;text-align: justify;">{{loanProfile.notes}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

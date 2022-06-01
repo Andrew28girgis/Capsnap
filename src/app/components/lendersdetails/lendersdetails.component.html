@@ -28,7 +28,7 @@
             <li class="breadcrumb-item active" aria-current="page">{{General.Organization?.name}}</li>
           </ol>
         </nav>
-        <div id="org-details" style="padding: 20px; background-color: #f8f8f8;">
+        <div id="org-details" style="padding: 20px; background-color: #f4f8fb;">
           <div class="one">
           <h1 >{{General.Organization?.name}}</h1>
           </div>
@@ -90,6 +90,11 @@
       <div *ngIf="Isloaded" >
 
         <app-lenders-loanprofile [General]="General"></app-lenders-loanprofile>
+      </div>
+
+
+      <div *ngIf="Isloaded" >
+        <app-lender-contacts [General]="General"></app-lender-contacts>
       </div>
     </div>
   </div>

@@ -1,3 +1,9 @@
-.zoom:hover{
-   transform: scale(1 ,1.5);
+.card-body{
+  box-shadow: 2px 6px 15px 0 rgb(69 65 78 / 10%) !important;
 }
+
+.card-body h5
+{
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'Source Sans Pro', sans-serif;}

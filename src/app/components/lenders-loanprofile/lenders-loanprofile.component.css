@@ -1,3 +1,7 @@
+.action-table tr:hover td{
+  color: #fff;
+  background-color:#004d73;
+}
 
  h1 {
   font-family: 'Source Sans Pro', sans-serif;
@@ -231,7 +235,7 @@ ul#org-details li#envelope-icon:before {
   background-color: #1089ff !important;
   border: 1px solid #1089ff !important;
   color: #fff;
-  margin: 0 19px 0 auto;
+  margin: 0 6px 0 auto;
 }
 
 
