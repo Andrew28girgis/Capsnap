@@ -15,7 +15,7 @@
           <div class="table-responsive" style="padding: 15px">
             <table id="basic-datatables" class="display table table-striped table-hover action-table table-bordered action-table ">
               <thead>
-                <tr>
+                <tr >
                   <th>Program Name</th>
                   <th>Target States</th>
                   <th>Target Countries</th>
@@ -29,7 +29,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let loanProfile of General.Organization.loanProfiles ">
+                <tr *ngFor="let loanProfile of General.Organization.loanProfiles " [routerLink]="['/lenders',loanProfile.organizationId,loanProfile.id,'details' ,{'General': JSON.stringify(General)}]" >
                   <td>{{loanProfile.programName}}</td>
                   <td>{{loanProfile.targetStates}}</td>
                   <td>{{loanProfile.targetCountries}}</td>

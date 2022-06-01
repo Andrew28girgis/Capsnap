@@ -9,8 +9,10 @@ import { LoanProfile, Organizations } from 'src/app/models/lenders';
   styleUrls: ['./lenders-loanprofile.component.css']
 })
 export class LendersLoanprofileComponent implements OnInit {
-
-  constructor(public activatedRoute: ActivatedRoute,private LendersService: LendersService) { }
+  JSON:JSON;
+  constructor(public activatedRoute: ActivatedRoute,private LendersService: LendersService) { 
+    this.JSON =JSON;
+  }
 
   @Input() General:any;
   @ViewChild('f') myForm;
@@ -23,6 +25,7 @@ export class LendersLoanprofileComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetOrgLoanProfile(this.General.Organization.id);
+  
   }
 
   GetOrgLoanProfile(OrganizationId:number){

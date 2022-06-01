@@ -1,1 +1,67 @@
-<p>loan-profile-details works!</p>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<section class="card" *ngIf="!isLoading">
+    <div class="card-header">
+        {{loanProfile.programName}} - {{loanProfile.loanProgramType}} 
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="card-body m-2 zoom">
+                    <h3>Organization</h3><br />
+                    <span>{{general.Organization.name}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Investor</h3><br />
+                    <span>{{loanProfile.investor}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Owner Occupier</h3><br />
+                    <span>{{loanProfile.ownerOccupier}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Notes</h3><br />
+                    <span>{{loanProfile.notes}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Target Counties</h3><br />
+                    <span>{{loanProfile.targetCounties}}</span><br />
+                    <hr>
+                    <h3>Target States</h3><br />
+                    <span>{{loanProfile.targetStates}}</span>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="card-body m-2 zoom">
+                    <h3>Tenancy</h3><br />
+                    <span>{{loanProfile.tenancy}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Recourse</h3><br />
+                    <span>{{loanProfile.recourse}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Leased Fee</h3><br />
+                    <span>{{loanProfile.leasedFee}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Minimum Loan Size</h3><br />
+                    <span>{{loanProfile.minimumLoanSize}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>As Stabilized Ltv</h3><br />
+                    <span>{{loanProfile.asStabilizedLtv}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Max LTV</h3><br />
+                    <span>{{loanProfile.maxLtv}}</span>
+                </div>
+                <div class="card-body m-2 zoom">
+                    <h3>Max LTC</h3><br />
+                    <span>{{loanProfile.maxLtc}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
