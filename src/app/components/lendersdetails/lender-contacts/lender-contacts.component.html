@@ -1,15 +1,9 @@
 
-  <div class="col-md-12" style="padding-block: 25px; background-color: #f4f8fb;">
+  <div class="col-md-12" style="padding-block: 40px; background-color: #f4f8fb;">
     <div class="one">
       <h1>Contacts</h1>
     </div>
-    <div style="margin: auto 10px;">
-      <button class="btn-31" data-toggle="modal" data-target="#createContact">
-        <span class="text-container">
-          <span class="text">Create contact</span>
-        </span>
-      </button>
-    </div>
+
 
     <div class="row" style="padding: 20px;">
       <div class="col-sm-6 col-lg-3 mt-4" *ngFor="let contact of General.Organization.contacts">
@@ -19,11 +13,21 @@
               <i class="fa fa-users"></i>
             </span> -->
             <div>
-              <h5 class="mb-1" style="font-size:17px; color: #007bff;"><b>{{contact.firstName}} {{contact.lastName}}</b></h5>
-              <p class="text-muted">{{contact.cellPhone}}</p>
-              <p class="text-muted">{{contact.email}}</p>
-              <p class="text-muted">{{contact.linkedIn}}</p>
+              <h5 class="mb-1" style="font-size:17px; color: #004d73;"><b>{{contact.firstName}} {{contact.lastName}}</b></h5>
+              <p>{{contact.cellPhone}}</p>
+              <p>{{contact.email}}</p>
+              <p>{{contact.linkedIn}}</p>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mt-4" data-toggle="modal" data-target="#createContact" style="cursor: pointer;">
+        <div class="card p-3">
+          <div class="d-flex align-items-center" style="    margin: auto;" >
+
+              <i class="fas fa-plus" style="font-size: 120px ; color: #004d73;"></i>
+
+
           </div>
         </div>
       </div>
