@@ -17,7 +17,7 @@ export class LoanProfileDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-  
+      this.general =JSON.parse( params.General);
       this.loanProfile =  this.general.Organization.loanProfiles.find(lp => lp.id == params.loanProfileId);
       this.isLoading = false;
     })
