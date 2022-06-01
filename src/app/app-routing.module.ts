@@ -13,6 +13,7 @@ import { MainDealComponent } from './components/main-deal/main-deal.component';
 import { UploadGlobalDsComponent } from './components/upload-global-ds/upload-global-ds.component';
 import { UserComponent } from './components/user/user.component';
 import { NewloanprofileComponent } from './components/lenders-loanprofile/newloanprofile/newloanprofile.component';
+import { LoanProfileDetailsComponent } from './components/lenders-loanprofile/loan-profile-details/loan-profile-details.component';
 
 const routes: Routes = [
   {path:'',component:DealsComponent},
@@ -30,7 +31,8 @@ const routes: Routes = [
   {path:'lenders' , component:LendersComponent} ,
   {path:'lenders/:organizationId' , component:LendersdetailsComponent} ,
   {path:'lenders/:organizationId/newLoanProfile' , component:NewloanprofileComponent},
-  {path:'lenders/:organizationId/:loanProfileId/edit' , component:NewloanprofileComponent}
+  {path:'lenders/:organizationId/:loanProfileId/edit' , component:NewloanprofileComponent},
+  {path:'lenders/:organizationId/:loanProfileId/details' , component:LoanProfileDetailsComponent}
 ];
 
 @NgModule({

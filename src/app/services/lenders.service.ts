@@ -79,6 +79,10 @@ export class LendersService {
     return this.http.get<any[]>(`${environment.api}/Contacts/Org/${id}`).pipe();
   }
 
+  public OrgContact(id:number): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.api}/Contacts/LP/${id}`).pipe();
+  }
+
   public SaveContacts(LoanProfile:any) {
     return this.http.post<any[]>(`${environment.api}/Contacts/SaveContact`, LoanProfile).pipe();
   }

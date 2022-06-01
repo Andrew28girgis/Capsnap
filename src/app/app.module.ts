@@ -44,6 +44,7 @@ import { LendersdetailsComponent } from './components/lendersdetails/lendersdeta
 import { SearchnamelenderPipe } from './pipes/searchnamelender.pipe';
 import { LendersLoanprofileComponent } from './components/lenders-loanprofile/lenders-loanprofile.component';
 import { NewloanprofileComponent } from './components/lenders-loanprofile/newloanprofile/newloanprofile.component';
+import { LoanProfileDetailsComponent } from './components/lenders-loanprofile/loan-profile-details/loan-profile-details.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { NewloanprofileComponent } from './components/lenders-loanprofile/newloa
     SearchnamelenderPipe,
     LendersLoanprofileComponent,
     NewloanprofileComponent,
+    LoanProfileDetailsComponent,
   ],
 
   imports: [
