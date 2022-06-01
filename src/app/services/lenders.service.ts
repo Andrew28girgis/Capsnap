@@ -72,4 +72,25 @@ export class LendersService {
   }
 
   // End Loan Profile
+
+
+  // Start Contact
+  public OrgContacts(id:number): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.api}/Contacts/Org/${id}`).pipe();
+  }
+
+  public SaveContacts(LoanProfile:any) {
+    return this.http.post<any[]>(`${environment.api}/Contacts/SaveContact`, LoanProfile).pipe();
+  }
+
+  public UpdateContacts(LoanProfile:any ,id?:number) {
+    return this.http.put<any[]>(`${environment.api}/Contacts/UpdateContact/${id} `, LoanProfile).pipe();
+  }
+
+  public DeleteContacts(loanProfile:any) {
+    this.options['body'] = loanProfile;
+
+    return this.http.delete<any[]>(`${environment.api}/Contacts/DeleteContact` , this.options).pipe();
+  }
+  // End Contact
 }
