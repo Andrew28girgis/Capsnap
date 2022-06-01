@@ -218,6 +218,7 @@ ul#org-details li#envelope-icon:before {
 
 .second-column {
   padding: 0;
+  background: #fff;
   border: 1px solid #ddd;
 }
 
