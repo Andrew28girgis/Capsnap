@@ -17,10 +17,10 @@ h1 {
   font-weight: bold;
   padding: 0;
   margin: 0;
-  color: #3c92ff !important;
+  color: #1f1f1f;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 ul#org-details {

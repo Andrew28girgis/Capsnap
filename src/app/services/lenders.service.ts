@@ -89,7 +89,6 @@ export class LendersService {
 
   public DeleteContacts(loanProfile:any) {
     this.options['body'] = loanProfile;
-
     return this.http.delete<any[]>(`${environment.api}/Contacts/DeleteContact` , this.options).pipe();
   }
   // End Contact

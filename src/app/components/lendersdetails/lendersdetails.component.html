@@ -18,24 +18,27 @@
 </div>
 
 <div class="row" style=" margin-top:65px;background-color: #f9fbfd;">
-  <nav aria-label="breadcrumb" style="margin-left: 16px;">
-    <ol class="breadcrumb" style="font-size: 21px;font-weight: 300;margin-bottom: 0;">
-      <li class="breadcrumb-item" ><a [routerLink]="['/lenders']">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{General.Organization?.name}}</li>
-    </ol>
-  </nav>
+
   <div class="col-md-12">
     <div class="card">
       <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.125); ">
-        <div id="org-details" style="padding: 30px;">
-          <h1>{{General.Organization?.name}}</h1>
+        <nav aria-label="breadcrumb" >
+          <ol class="breadcrumb" style="font-size: 21px;font-weight: 500;margin-bottom: 0; border-bottom: 1px solid #e6e6e6;">
+            <li class="breadcrumb-item" ><a [routerLink]="['/lenders']">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{General.Organization?.name}}</li>
+          </ol>
+        </nav>
+        <div id="org-details" style="padding: 20px;">
+          <div class="one">
+          <h1 >{{General.Organization?.name}}</h1>
+          </div>
           <ul id="org-details" style="padding-block: 30px; ">
             <li>
               <p style="margin: 0">{{General.Organization?.description}}</p>
             </li>
           </ul>
 
-          <div class="container">
+          <div class="container-fluid">
             <div class="row">
               <div class="col-sm-6 first-column">
                 <h2 class="project-types">Contact information</h2>
@@ -69,7 +72,7 @@
                           (click)="DeleteProjectTypeConnection(Type.id ,  Type.type)"></i></span>
                     </ng-container>
                     <button class="btn" data-toggle="modal" data-target="#addProjectType"
-                      style="background: #34495e;border-color: #34495e ;color: #fff!important;border-radius: 100px ;padding: 0.65rem 1.4rem;font-size: 14px;opacity: 1">
+                      style="background: #004d73;color: #fff!important;border-radius: 100px ;padding: 0.65rem 1.4rem;font-size: 14px;opacity: 1">
                       <i class="fa fa-plus" style="font-size: 15px;"></i></button>
                   </div>
                 </div>
