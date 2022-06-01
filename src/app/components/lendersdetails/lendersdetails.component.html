@@ -85,14 +85,20 @@
 
         </div>
       </div>
+
+
+      <div *ngIf="Isloaded" >
+
+        <app-lenders-loanprofile [General]="General"></app-lenders-loanprofile>
+      </div>
     </div>
   </div>
 
 
 </div>
-<div *ngIf="Isloaded"  style="padding-top:40px ;background-color: #f9fbfd;">
+<!-- <div *ngIf="Isloaded"  style="padding-top:40px ;background-color: #f9fbfd;">
   <app-lenders-loanprofile [General]="General"></app-lenders-loanprofile>
-</div>
+</div> -->
 
 
 <!-- Modal -->

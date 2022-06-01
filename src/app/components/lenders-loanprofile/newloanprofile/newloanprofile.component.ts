@@ -18,7 +18,6 @@ export class NewloanprofileComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit(): void {
-
     this.activatedRoute.params.subscribe((params) =>{
       this.organiztionId =  params.organizationId;
       if(params.loanProfileId==null){

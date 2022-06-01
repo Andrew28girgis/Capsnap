@@ -10,7 +10,7 @@ import { LoanProfile, Organizations } from 'src/app/models/lenders';
 })
 export class LendersLoanprofileComponent implements OnInit {
   JSON:JSON;
-  constructor(public activatedRoute: ActivatedRoute,private LendersService: LendersService) { 
+  constructor(public activatedRoute: ActivatedRoute,private LendersService: LendersService) {
     this.JSON =JSON;
   }
 
@@ -24,8 +24,8 @@ export class LendersLoanprofileComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log(this.General.Organization.id);
     this.GetOrgLoanProfile(this.General.Organization.id);
-  
   }
 
   GetOrgLoanProfile(OrganizationId:number){
