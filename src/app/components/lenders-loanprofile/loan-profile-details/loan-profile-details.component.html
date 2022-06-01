@@ -2,63 +2,63 @@
 
 <section class="card" *ngIf="!isLoading">
     <div class="card-header">
-        {{loanProfile.programName}} - {{loanProfile.loanProgramType}} 
+        {{loanProfile.programName}} - {{loanProfile.loanProgramType}} <span class="float-right"> <input type="checkbox" name="international"  id="international" [checked]="loanProfile.international"/> international</span>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col">
-                <div class="card-body m-2 zoom">
-                    <h3>Organization</h3><br />
+    <div class="card-body bg-transparent">
+        <div class="row bg-transparent">
+            <div class="col bg-transparent">
+                <div class="card-body m-2 bg-white ">
+                    <h3>Organization</h3>
                     <span>{{general.Organization.name}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Investor</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Investor</h3>
                     <span>{{loanProfile.investor}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Owner Occupier</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Owner Occupier</h3>
                     <span>{{loanProfile.ownerOccupier}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Notes</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Notes</h3>
                     <span>{{loanProfile.notes}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Target Counties</h3><br />
-                    <span>{{loanProfile.targetCounties}}</span><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Target Counties</h3>
+                    <span>{{loanProfile.targetCounties}}</span>
                     <hr>
-                    <h3>Target States</h3><br />
+                    <h3>Target States</h3>
                     <span>{{loanProfile.targetStates}}</span>
                 </div>
 
             </div>
             <div class="col">
-                <div class="card-body m-2 zoom">
-                    <h3>Tenancy</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Tenancy</h3>
                     <span>{{loanProfile.tenancy}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Recourse</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Recourse</h3>
                     <span>{{loanProfile.recourse}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Leased Fee</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Leased Fee</h3>
                     <span>{{loanProfile.leasedFee}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Minimum Loan Size</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Minimum Loan Size</h3>
                     <span>{{loanProfile.minimumLoanSize}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>As Stabilized Ltv</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>As Stabilized Ltv</h3>
                     <span>{{loanProfile.asStabilizedLtv}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Max LTV</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Max LTV</h3>
                     <span>{{loanProfile.maxLtv}}</span>
                 </div>
-                <div class="card-body m-2 zoom">
-                    <h3>Max LTC</h3><br />
+                <div class="card-body m-2 bg-white">
+                    <h3>Max LTC</h3>
                     <span>{{loanProfile.maxLtc}}</span>
                 </div>
             </div>
