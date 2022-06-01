@@ -25,12 +25,13 @@ export class NewloanprofileComponent implements OnInit {
         this.newLoanProfile.organizationId = +this.organiztionId;
       }else{
         this.edit=true;
-        this.General.Organization.loanProfiles.forEach(element => {
-          if(element.id==params.loanProfileId){
-            this.newLoanProfile = element;
-          }
-        }
-        );
+        this.newLoanProfile =JSON.parse( params.loanProfile);
+        // this.General.Organization.loanProfiles.forEach(element => {
+        //   if(element.id==params.loanProfileId){
+        //     this.newLoanProfile = element;
+        //   }
+        // }
+        // );
       }
     })
 }
@@ -38,26 +39,15 @@ export class NewloanprofileComponent implements OnInit {
   onSubmit(){
     if(!this.edit){
     this.LendersService.SaveLoanProfile(this.newLoanProfile).subscribe((data:any)=>{
-      this.General.Organizations.forEach(element => {
-        if(element.id == this.organiztionId){
-          element.loanProfiles.push(data);
+
           this.router.navigate(['/lenders', this.organiztionId]);
-        }
-      });
-    })
+
+    });
   }
   else{
     this.LendersService.UpdateLoanProfile(this.newLoanProfile , this.newLoanProfile.id).subscribe((data:any)=>{
-
-      this.General.Organization.loanProfiles.forEach(element => {
-        if(element.id == this.newLoanProfile.id){
-          element = data;
           this.router.navigate(['/lenders', this.organiztionId]);
-          return;
-        }
-      }
-      );
-    } )
+    } );
 
   }
   }
