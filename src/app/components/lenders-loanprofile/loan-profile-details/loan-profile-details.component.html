@@ -13,7 +13,6 @@
 </div>
 
 <div class="row" style=" margin-top:65px;background-color: #f9f9f9;">
-
   <div class="col-md-12">
     <div class="card">
       <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.125); ">
@@ -27,11 +26,22 @@
           </ol>
         </nav>
       </div>
+
+
     </div>
   </div>
 </div>
 
 <div class="row " style="background-color:#f4f8fb ;padding: 20px;">
+  <div class="col-md-12">
+    <button class="btn-31"
+    [routerLink]="['/lenders', general.Organization.id , loanProfile.id ,'edit',{'loanProfile': JSON.stringify(loanProfile)}]">
+          <span class="text-container">
+            <span class="text">Edit</span>
+          </span>
+        </button>
+  </div>
+
   <div class="col-12 col-sm-6 col-md-3 mt-4">
     <div class="card">
       <div class="card-body">

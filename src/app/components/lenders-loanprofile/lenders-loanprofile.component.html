@@ -31,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let loanProfile of General.Organization.loanProfiles " style="cursor: pointer;"
+            <tr *ngFor="let loanProfile of General.Organization.loanProfiles" style="cursor: pointer;"
               [routerLink]="['/lenders',loanProfile.organizationId,loanProfile.id, 'details' ,{'General': JSON.stringify(General)}]">
               <td>{{loanProfile.programName}}</td>
               <td>{{loanProfile.targetStates}}</td>
@@ -45,9 +45,8 @@
                 <i class="fas fa-edit" [routerLink]="['/lenders', General.Organization.id , loanProfile.id ,'edit',{'loanProfile': JSON.stringify(loanProfile)}]"
                   style="cursor: pointer; color: #1572e8!important;"></i>
               </td>
-              <td style="text-align: center;">
-                <i class="fas fa-trash-alt" style="cursor: pointer; color: #f25961!important;"
-                  (click)="DeleteLoanProfiles(loanProfile)"></i>
+              <td style="text-align: center;"  (click)="$event.stopPropagation();DeleteLoanProfiles(loanProfile)">
+                <i class="fas fa-trash-alt" style="cursor: pointer; color: #f25961!important;"></i>
               </td>
             </tr>
           </tbody>
