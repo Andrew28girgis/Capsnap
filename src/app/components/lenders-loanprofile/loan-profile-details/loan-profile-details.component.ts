@@ -12,15 +12,18 @@ export class LoanProfileDetailsComponent implements OnInit {
   loanProfile: LoanProfile = new LoanProfile();
   isLoading: Boolean = true;
   general:General;
+  JSON:JSON;
+
   constructor(private activatedRoute: ActivatedRoute, private LendersService: LendersService,
-    private router: Router) { }
+    private router: Router) {
+    this.JSON =JSON;
+  }
+
 
   ngOnInit(): void {
-
     this.activatedRoute.params.subscribe(params => {
       this.general =JSON.parse( params.General);
       this.loanProfile =  this.general.Organization.loanProfiles.find(lp => lp.id == params.loanProfileId);
-      console.log(this.loanProfile);
       this.isLoading = false;
     })
   }
