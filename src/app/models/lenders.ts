@@ -84,4 +84,13 @@ export class Contact{
   cellPhone:string;
   email:string;
   linkedIn:string;
+  contactsLoanProfile:ContactsLoanProfile[] =[];
+}
+
+
+export class ContactsLoanProfile{
+  id:number;
+  loanProfileId:number;
+  contactId:number;
+  loanProfile:LoanProfile;
 }

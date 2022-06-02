@@ -83,10 +83,17 @@ export class LendersService {
     return this.http.get<any[]>(`${environment.api}/Contacts/LP/${id}`).pipe();
   }
 
-  public SaveContacts(LoanProfile:any) {
-    return this.http.post<any[]>(`${environment.api}/Contacts/SaveContact`, LoanProfile).pipe();
+  public SaveContacts(contact:any) {
+    return this.http.post<any>(`${environment.api}/Contacts/SaveContact`, contact).pipe();
   }
 
+  public SaveContactConnection(connections:any) {
+    return this.http.post<any[]>(`${environment.api}/ContactLoanProfiles/SaveContactConnection`, connections).pipe();
+  }
+
+  public DeleteContactConnection(id:number) {
+    return this.http.delete<any[]>(`${environment.api}/Contacts/DeleteProjectTypeConnection/${id}`).pipe();
+  }
   public UpdateContacts(LoanProfile:any ,id?:number) {
     return this.http.put<any[]>(`${environment.api}/Contacts/UpdateContact/${id} `, LoanProfile).pipe();
   }
